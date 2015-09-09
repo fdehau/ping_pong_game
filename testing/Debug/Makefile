@@ -37,7 +37,9 @@ SUBDIRS :=
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
+../ADC_driver.c \
 ../driver_ATMega_uart.c \
+../JOYSTICK_driver.c \
 ../testing.c
 
 
@@ -48,19 +50,27 @@ ASM_SRCS +=
 
 
 OBJS +=  \
+ADC_driver.o \
 driver_ATMega_uart.o \
+JOYSTICK_driver.o \
 testing.o
 
 OBJS_AS_ARGS +=  \
+ADC_driver.o \
 driver_ATMega_uart.o \
+JOYSTICK_driver.o \
 testing.o
 
 C_DEPS +=  \
+ADC_driver.d \
 driver_ATMega_uart.d \
+JOYSTICK_driver.d \
 testing.d
 
 C_DEPS_AS_ARGS +=  \
+ADC_driver.d \
 driver_ATMega_uart.d \
+JOYSTICK_driver.d \
 testing.d
 
 OUTPUT_FILE_PATH +=testing.elf
@@ -77,6 +87,10 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
+
+
 
 
 

@@ -12,8 +12,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
+#include "util.h"
+#include "ADC_driver.h"
+#include "JOYSTICK_driver.h"
 #include"driver_ATMega_uart.h"
+
 
 void SRAM_test(void)
 {
@@ -53,14 +56,55 @@ int main(void)
 {
 	
 	USART_init();
-	//DDRA=0xFF;
 	
-	MCUCR |= (1 << SRE);
-	
-	while(1){
-		SRAM_test();
+	JOY_init();
+	while(1)
+	{
+		JOY_position_t position = JOY_getPosition();
+		JOY_direction_t direction = JOY_getDirection();
+		uint8_t left_slider = JOY_getButton(JOY_LEFT_SLIDER);
+		uint8_t right_slider = JOY_getButton(JOY_RIGHT_SLIDER);
+		char* string = direction_to_string(direction);
+		printf("Position %d:%d / Direction: %s / Sliders: %d:%d\n", position.X, position.Y, string, left_slider, right_slider);
+		free(string);
+		_delay_ms(500);
 	}
 	
+	
+	/*
+	while(1)
+	{
+		JOY_X_value = ADC_read(JOY_X);
+		JOY_Y_value = ADC_read(JOY_Y);
+		LEFT_SLIDER_value = ADC_read(LEFT_SLIDER);
+		RIGHT_SLIDER_value = ADC_read(RIGHT_SLIDER);
+		printf("JX: %4d \t    JY: %4d  \t  LS: %4d \t   RS: %4d \n", JOY_X_value, JOY_Y_value, LEFT_SLIDER_value, RIGHT_SLIDER_value);
+		_delay_ms(100);
+	}
+	*/
+	
+	
+	/*DDRC=0xFF;
+	
+	
+	unsigned char testvalue;
+	volatile char *ext_ram = (char *) 0x1400;//Start address for the SRAM
+	bit_clear(PORTC,BIT(3));
+	bit_clear(PORTC,BIT(2));
+	int i;
+	int seed = rand();
+	while(1){
+		//SRAM_test();
+		//bit_set(PORTC,BIT(2));
+		//bit_set(PORTC,BIT(3));
+		
+		srand(seed);
+		for (i = 0; i < 0x400; i++) {
+			testvalue = rand();
+			ext_ram[i] = testvalue;
+			}
+	}
+	*/
 	
 	/*
 	while(1)
