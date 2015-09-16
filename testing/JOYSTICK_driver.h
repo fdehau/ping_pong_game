@@ -12,7 +12,7 @@
 #include <avr/io.h>
 #include <math.h>
 #include "ADC_driver.h"
-
+#include "util.h"
 
 enum JOY_direction
 {

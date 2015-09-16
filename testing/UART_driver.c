@@ -1,6 +1,6 @@
 
 /*
- * driver_ATMega_uart.c
+ * UART_driver.c
  *
  * Created: 28.08.2015 14:38:25
  *  Author: vegasten
@@ -11,7 +11,7 @@
 //void USART_init(void);
 //unsigned char USART_recieve(void);
 
-#include "driver_ATMega_uart.h"
+#include "UART_driver.h"
 
 void USART_init(void){
 	UBRR0H = (uint8_t)(BAUD_PRESCALLER>>8);

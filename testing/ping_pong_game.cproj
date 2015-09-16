@@ -13,7 +13,7 @@
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
     <AssemblyName>testing</AssemblyName>
-    <Name>testing</Name>
+    <Name>ping_pong_game</Name>
     <RootNamespace>testing</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
@@ -115,10 +115,16 @@
     <Compile Include="ADC_driver.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="driver_ATMega_uart.c">
+    <Compile Include="font.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="driver_ATMega_uart.h">
+    <Compile Include="UART_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="UART_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="font.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="JOYSTICK_driver.c">
@@ -127,7 +133,13 @@
     <Compile Include="JOYSTICK_driver.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="testing.c">
+    <Compile Include="OLED_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="OLED_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="util.h">

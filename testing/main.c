@@ -15,7 +15,8 @@
 #include "util.h"
 #include "ADC_driver.h"
 #include "JOYSTICK_driver.h"
-#include"driver_ATMega_uart.h"
+#include "UART_driver.h"
+#include "OLED_driver.h"
 
 
 void SRAM_test(void)
@@ -58,16 +59,25 @@ int main(void)
 	USART_init();
 	
 	JOY_init();
+	OLED_init();
+	int i = 0;
 	while(1)
 	{
-		JOY_position_t position = JOY_getPosition();
-		JOY_direction_t direction = JOY_getDirection();
-		uint8_t left_slider = JOY_getButton(JOY_LEFT_SLIDER);
-		uint8_t right_slider = JOY_getButton(JOY_RIGHT_SLIDER);
-		char* string = direction_to_string(direction);
-		printf("Position %d:%d / Direction: %s / Sliders: %d:%d\n", position.X, position.Y, string, left_slider, right_slider);
-		free(string);
-		_delay_ms(500);
+		OLED_clr();
+		OLED_pos(1, i++, 13 * FONT_WIDTH);//10 * FONT_WIDTH);
+		OLED_print("Hello world !");// World !");
+		OLED_pos(2, i++, 7 * FONT_WIDTH);//10 * FONT_WIDTH);
+		i = (i>128) ? 0 : i;
+		OLED_print("Testing");
+		_delay_ms(1000/120);
+// 		JOY_position_t position = JOY_getPosition();
+// 		JOY_direction_t direction = JOY_getDirection();
+// 		uint8_t left_slider = JOY_getButton(JOY_LEFT_SLIDER);
+// 		uint8_t right_slider = JOY_getButton(JOY_RIGHT_SLIDER);
+// 		char* string = direction_to_string(direction);
+// 		printf("Position %d:%d / Direction: %s / Sliders: %d:%d\n" , position.X, position.Y, string, left_slider, right_slider);
+// 		free(string);
+// 		_delay_ms(500);
 	}
 	
 	
