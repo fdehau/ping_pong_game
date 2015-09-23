@@ -28,12 +28,35 @@ void OLED_clr()
 
 void OLED_pos(int page, int column, int width)
 {
-	OLED_write_command(0x22);
-	OLED_write_command(page);
-	OLED_write_command(page);
+	//OLED_write_command(0x22);
+	//OLED_write_command(page);
+	//OLED_write_command(page);
+	OLED_goto_line(page);
 	OLED_write_command(0x21);
 	OLED_write_command(column);
-	OLED_write_command(column + width);
+	OLED_write_command(column+width);
+}
+
+void OLED_goto_line(int line)
+{
+	OLED_write_command(0x22);
+	OLED_write_command(line);
+	OLED_write_command(line);
+	OLED_write_command(0x21);
+	OLED_write_command(0);
+	OLED_write_command(127);
+}
+
+
+void OLED_clear_line(int line)
+{
+	volatile char *oled_data = (char *) 0x1200;
+	OLED_goto_line(line);
+	OLED_pos(line, 0,127);
+	for(int j = 0; j < 128; j++)
+	{
+		*oled_data = 0x00;
+	}
 }
 
 void OLED_init()
@@ -78,4 +101,15 @@ void OLED_print(char* string)
 			*oled_data = pgm_read_byte(&char_bytes[j]);
 		}
 	}
+}
+
+void OLED_print_arrow(int page, int col)
+{
+	volatile char *oled_data = (char *) 0x1200;
+	OLED_pos(page, col, 5);
+	*oled_data = 0b00011000;
+	*oled_data = 0b00011000;
+	*oled_data = 0b01111110;
+	*oled_data = 0b00111100;
+	*oled_data = 0b00011000;
 }

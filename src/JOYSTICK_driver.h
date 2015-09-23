@@ -10,6 +10,8 @@
 #define JOYSTICK_DRIVER_H_
 
 #include <avr/io.h>
+#include <string.h>
+#include <stdlib.h>
 #include <math.h>
 #include "ADC_driver.h"
 #include "util.h"
@@ -37,7 +39,9 @@ enum JOY_button
 	JOY_LEFT_SLIDER,
 	JOY_RIGHT_SLIDER,
 	JOY_LEFT_BUTTON,
-	JOY_RIGHT_BUTTON,	
+	JOY_RIGHT_BUTTON,
+	JOY_ENTER_BUTTON,
+	JOY_BACK_BUTTON,
 };
 
 uint8_t JOY_X_INIT;

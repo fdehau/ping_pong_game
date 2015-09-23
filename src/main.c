@@ -12,11 +12,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "util.h"
-#include "ADC_driver.h"
+//#include "util.h"
+// #include "ADC_driver.h"
 #include "JOYSTICK_driver.h"
 #include "UART_driver.h"
 #include "OLED_driver.h"
+#include "input.h"
+#include "menu.h"
 
 
 void SRAM_test(void)
@@ -57,28 +59,112 @@ int main(void)
 {
 	
 	USART_init();
-	
 	JOY_init();
 	OLED_init();
-	int i = 0;
+
+	Menu_t* active_menu = menu_create_start_menu();
+	Input_t input;
+	OLED_clr();
+	menu_draw(active_menu, 2);
 	while(1)
 	{
-		OLED_clr();
-		OLED_pos(1, i++, 13 * FONT_WIDTH);//10 * FONT_WIDTH);
-		OLED_print("Hello world !");// World !");
-		OLED_pos(2, i++, 7 * FONT_WIDTH);//10 * FONT_WIDTH);
-		i = (i>128) ? 0 : i;
-		OLED_print("Testing");
-		_delay_ms(1000/120);
-// 		JOY_position_t position = JOY_getPosition();
-// 		JOY_direction_t direction = JOY_getDirection();
-// 		uint8_t left_slider = JOY_getButton(JOY_LEFT_SLIDER);
-// 		uint8_t right_slider = JOY_getButton(JOY_RIGHT_SLIDER);
-// 		char* string = direction_to_string(direction);
-// 		printf("Position %d:%d / Direction: %s / Sliders: %d:%d\n" , position.X, position.Y, string, left_slider, right_slider);
-// 		free(string);
-// 		_delay_ms(500);
+		
+		// Update
+		update(&input);
+		
+		// Process events
+		int event_flag = 0;
+		switch(get_direction(&input)){
+			case SWIPE_UP:
+				menu_move(active_menu, MENU_UP);
+				event_flag = 1;
+				break;
+			case SWIPE_DOWN:
+				menu_move(active_menu, MENU_DOWN);
+				event_flag = 1;
+				break;
+			default:
+				break;
+		}
+		
+		if(is_enter_pressed(&input)){
+			if(active_menu->selected)
+			{
+				active_menu = active_menu->selected;
+				event_flag = 1;
+			}
+		}
+		if(is_back_pressed(&input)){
+			if(active_menu->parent)
+			{
+				active_menu = active_menu->parent;
+				event_flag = 1;
+			}
+		}
+		
+		// Draw
+		if(event_flag)
+		{
+			OLED_clr();
+			menu_draw(active_menu, 2);
+		}
+		
+		_delay_ms(1000/30);
+		
 	}
+	
+	//OLED_pos(1, i++, 13 * FONT_WIDTH);//10 * FONT_WIDTH);
+	//OLED_print("Hello world !");// World !");
+	//OLED_pos(2, i++, 7 * FONT_WIDTH);//10 * FONT_WIDTH);
+	//i = (i>128) ? 0 : i;
+	// 		OLED_goto_line(0);
+	// 		OLED_print("Testing 1");
+	//
+	// 		OLED_goto_line(1);
+	// 		OLED_print("Testing 2");
+	//
+	// 		OLED_goto_line(2);
+	// 		OLED_print("Testing 3");
+	//
+	// 		OLED_goto_line(3);
+	// 		OLED_print("Testing 4");
+	//
+	// 		OLED_goto_line(4);
+	// 		OLED_print("Testing 5");
+	//
+	// 		OLED_goto_line(5);
+	// 		OLED_print("Testing 6");
+	//
+	// 		OLED_goto_line(6);
+	// 		OLED_print("Testing 7");
+	//
+	// 		OLED_goto_line(7);
+	// 		uint8_t sw_button = JOY_getButton(JOY_SW_BUTTON);
+	// 		char str[20];
+	// 		printf("Button: %u\n", sw_button);
+	// 		sprintf(str, "Button: %u", sw_button);
+	// 		OLED_print(str);
+	
+	//_delay_ms(1000);
+	//OLED_clear_line(2);
+	
+	//OLED_goto_line(4);
+	//LED_print("test");
+	//_delay_ms(1000);
+	//OLED_pos(2,100,0);
+	//OLED_print("t");
+	//_delay_ms(1000);
+	
+	
+	
+	// 		JOY_position_t position = JOY_getPosition();
+	// 		JOY_direction_t direction = JOY_getDirection();
+	// 		uint8_t left_slider = JOY_getButton(JOY_LEFT_SLIDER);
+	// 		uint8_t right_slider = JOY_getButton(JOY_RIGHT_SLIDER);
+	// 		char* string = direction_to_string(direction);
+	// 		printf("Position %d:%d / Direction: %s / Sliders: %d:%d\n" , position.X, position.Y, string, left_slider, right_slider);
+	// 		free(string);
+	// 		_delay_ms(500);
 	
 	
 	/*

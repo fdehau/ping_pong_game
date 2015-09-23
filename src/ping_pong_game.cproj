@@ -118,6 +118,18 @@
     <Compile Include="font.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="input.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="input.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="menu.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="menu.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="UART_driver.c">
       <SubType>compile</SubType>
     </Compile>

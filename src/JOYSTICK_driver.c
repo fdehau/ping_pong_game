@@ -10,6 +10,13 @@
 
 void JOY_init(){
 	MCUCR |= (1 << SRE);
+	
+	// Init the pin for button input
+	DDRB &= ~(1 << PB0);
+	PORTB |= (1 << PB0);
+	DDRB &= ~(1 << PB1);
+	PORTB |= (1 << PB1);
+	
 	JOY_calibrate();
 }
 	
@@ -33,6 +40,12 @@ uint8_t JOY_getButton(enum JOY_button button){
 			return 0;
 		case JOY_RIGHT_BUTTON:
 			return 0;
+		case JOY_ENTER_BUTTON:
+			return bit_get(PINB,BIT(0));
+		case JOY_BACK_BUTTON:
+			return bit_get(PINB,BIT(1));
+		default:
+			return -1;
 	}
 }
 

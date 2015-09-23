@@ -19,7 +19,9 @@ void OLED_clr();
 void OLED_write_command(unsigned char cmd);
 void OLED_pos(int page, int column, int width);
 void OLED_print(char* string);
+void OLED_clear_line(int line);
+void OLED_goto_line(int line);
 
-
+void OLED_print_arrow(int row, int col);
 
 #endif /* OLED_DRIVER_H_ */
