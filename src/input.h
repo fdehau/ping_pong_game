@@ -29,6 +29,6 @@ typedef struct Input Input_t;
 void update(Input_t* input);
 int is_enter_pressed(Input_t* input);
 int is_back_pressed(Input_t* input);
-enum SWIPE get_direction(Input_t* input);
+enum SWIPE get_gesture(Input_t* input);
 
 #endif /* INPUT_H_ */

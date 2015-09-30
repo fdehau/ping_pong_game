@@ -33,7 +33,7 @@ int is_back_pressed(Input_t* input)
 	return input->back_button[0] != input->back_button[1] && input->back_button[0] == 0;
 }
 
-enum SWIPE get_direction(Input_t* input)
+enum SWIPE get_gesture(Input_t* input)
 {
 	if(input->joy_direction[0] == UP && input->joy_direction[1] == NEUTRAL)
 		return SWIPE_UP;

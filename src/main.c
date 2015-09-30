@@ -17,6 +17,7 @@
 #include "JOYSTICK_driver.h"
 #include "UART_driver.h"
 #include "OLED_driver.h"
+#include "CAN_driver.h"
 #include "input.h"
 #include "menu.h"
 
@@ -61,11 +62,36 @@ int main(void)
 	USART_init();
 	JOY_init();
 	OLED_init();
+	CAN_init();
 
 	Menu_t* active_menu = menu_create_start_menu();
 	Input_t input;
 	OLED_clr();
 	menu_draw(active_menu, 2);
+	
+	CanMessage_t message;
+	CanMessage_t resp;
+	memset(&resp, 0, sizeof(CanMessage_t));
+	memset(&message, 0, sizeof(CanMessage_t));
+	
+	message.id = 15;
+	message.length = 5;
+	message.data[0] = 'T';
+	message.data[1] = 'E';
+	message.data[2] = 'S';
+	message.data[3] = 'T';
+	
+	CAN_send(&message);
+	resp = CAN_receive();
+	
+	printf("Id: %d\n", resp.id);
+	printf("Length: %d\n", resp.length);
+	for(int i =0; i < resp.length; i++)
+	{
+		printf("Data[%d]: %d\n", i, (char) resp.data[i]);
+	}
+	
+	
 	while(1)
 	{
 		
@@ -74,9 +100,9 @@ int main(void)
 		
 		// Process events
 		int event_flag = 0;
-		switch(get_direction(&input)){
+		switch(get_gesture(&input)){
 			case SWIPE_UP:
-				menu_move(active_menu, MENU_UP);
+				menu_move(active_menu, MENU_UP); 
 				event_flag = 1;
 				break;
 			case SWIPE_DOWN:

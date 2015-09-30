@@ -115,6 +115,12 @@
     <Compile Include="ADC_driver.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="CAN_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="CAN_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="font.c">
       <SubType>compile</SubType>
     </Compile>
@@ -124,10 +130,22 @@
     <Compile Include="input.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="MCP2515_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCP2515_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="menu.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="menu.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SPI_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SPI_driver.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="UART_driver.c">
