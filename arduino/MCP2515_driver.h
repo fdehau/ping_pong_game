@@ -37,6 +37,7 @@
 #define MCP_RTS_TXB1 0b10000010
 #define MCP_RTS_TXB2 0b10000100
 
+
 uint8_t MCP2515_init();
 uint8_t MCP2515_read(uint8_t address);
 uint8_t MCP2515_read_status();

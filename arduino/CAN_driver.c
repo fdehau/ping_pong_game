@@ -22,7 +22,8 @@ void CAN_send(CanMessage_t* message)
 	MCP2515_write(CAN_TR_ID_ADDR_1, message->id >> 3);
 	MCP2515_write(CAN_TR_ID_ADDR_2, message->id << 5);
 	MCP2515_write(CAN_TR_LEN_ADDR, message->length);
-	for(int i = 0; i < message->length; i++)
+	int i;
+	for(i = 0; i < message->length; i++)
 	{
 		MCP2515_write(CAN_TR_DATA_ADDR + i, message->data[i]);
 	}
@@ -39,7 +40,8 @@ CanMessage_t CAN_receive()
 	uint8_t id_part2 = MCP2515_read(CAN_RCV_ID_ADDR_2) >> 5;
 	message.id = id_part1 | id_part2;
 	message.length = MCP2515_read(CAN_RCV_LEN_ADDR) & 0x0F;
-	for(int i = 0; i < message.length; i++)
+	int i;
+	for(i = 0; i < message.length; i++)
 	{
 		message.data[i] = MCP2515_read(CAN_RCV_DATA_ADDR + i);
 	}

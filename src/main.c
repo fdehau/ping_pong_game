@@ -62,36 +62,13 @@ int main(void)
 	USART_init();
 	JOY_init();
 	OLED_init();
-	CAN_init();
+	CAN_init(MCP_MODE_NORMAL);
 
 	Menu_t* active_menu = menu_create_start_menu();
 	Input_t input;
 	OLED_clr();
 	menu_draw(active_menu, 2);
-	
-	CanMessage_t message;
-	CanMessage_t resp;
-	memset(&resp, 0, sizeof(CanMessage_t));
-	memset(&message, 0, sizeof(CanMessage_t));
-	
-	message.id = 15;
-	message.length = 5;
-	message.data[0] = 'T';
-	message.data[1] = 'E';
-	message.data[2] = 'S';
-	message.data[3] = 'T';
-	
-	CAN_send(&message);
-	resp = CAN_receive();
-	
-	printf("Id: %d\n", resp.id);
-	printf("Length: %d\n", resp.length);
-	for(int i =0; i < resp.length; i++)
-	{
-		printf("Data[%d]: %d\n", i, (char) resp.data[i]);
-	}
-	
-	
+
 	while(1)
 	{
 		
@@ -135,7 +112,28 @@ int main(void)
 			menu_draw(active_menu, 2);
 		}
 		
-		_delay_ms(1000/30);
+		CanMessage_t message;
+/*		CanMessage_t resp;*/
+		memset(&message, 0, sizeof(CanMessage_t));
+		
+		message.id = 15;
+		message.length = 5;
+		message.data[0] = 'T';
+		message.data[1] = 'E';
+		message.data[2] = 'S';
+		message.data[3] = 'T';
+		
+		CAN_send(&message);
+// 		resp = CAN_receive();
+// 		
+// 		printf("Id: %d\n", resp.id);
+// 		printf("Length: %d\n", resp.length);
+// 		for(int i =0; i < resp.length; i++)
+// 		{
+// 			printf("Data[%d]: %d\n", i, (char) resp.data[i]);
+// 		}
+		
+		_delay_ms(1000/2);
 		
 	}
 	

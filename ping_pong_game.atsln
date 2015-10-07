@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Atmel Studio Solution File, Format Version 11.00
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "ping_pong_game", "src\ping_pong_game.cproj", "{B2ABBA17-57AC-4569-9BAA-4BC46E71B865}"
 EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "arduino", "arduino\arduino.cppproj", "{07B459B4-8D76-4638-BC6D-A459BA2D616B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AVR = Debug|AVR
@@ -13,6 +15,10 @@ Global
 		{B2ABBA17-57AC-4569-9BAA-4BC46E71B865}.Debug|AVR.Build.0 = Debug|AVR
 		{B2ABBA17-57AC-4569-9BAA-4BC46E71B865}.Release|AVR.ActiveCfg = Release|AVR
 		{B2ABBA17-57AC-4569-9BAA-4BC46E71B865}.Release|AVR.Build.0 = Release|AVR
+		{07B459B4-8D76-4638-BC6D-A459BA2D616B}.Debug|AVR.ActiveCfg = Debug|AVR
+		{07B459B4-8D76-4638-BC6D-A459BA2D616B}.Debug|AVR.Build.0 = Debug|AVR
+		{07B459B4-8D76-4638-BC6D-A459BA2D616B}.Release|AVR.ActiveCfg = Release|AVR
+		{07B459B4-8D76-4638-BC6D-A459BA2D616B}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
