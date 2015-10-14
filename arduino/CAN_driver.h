@@ -13,12 +13,15 @@
 #include "util.h"
 
 #define CAN_TR_CTRL_REG     0x30
+#define CAN_TR_REQUEST      0b00001000
+#define CAN_TR_ERR          0b00010000
+#define CAN_TR_MLOA         0b00100000
+#define CAN_TR_ABTF         0b01000000
+
 #define CAN_TR_ID_ADDR_1    0x31
 #define CAN_TR_ID_ADDR_2    0x32
 #define CAN_TR_LEN_ADDR     0x35
 #define CAN_TR_DATA_ADDR    0x36
-
-#define CAN_TR_AVAILABLE    0b00001000
 
 #define CAN_RCV_CTRL_REG    0x60
 #define CAN_RCV_ID_ADDR_1   0x61
@@ -39,8 +42,8 @@ struct CanMessage
 };
 typedef struct CanMessage CanMessage_t;
 
-void CAN_init(uint8_t mode);
-void CAN_send(CanMessage_t* message);
+uint8_t CAN_init(uint8_t mode);
+uint8_t CAN_send(CanMessage_t* message);
 CanMessage_t CAN_receive();
 
 #endif /* CAN_DRIVER_H_ */

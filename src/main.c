@@ -113,27 +113,47 @@ int main(void)
 		}
 		
 		CanMessage_t message;
-/*		CanMessage_t resp;*/
-		memset(&message, 0, sizeof(CanMessage_t));
 		
+		memset(&message, 0, sizeof(CanMessage_t));
+	
 		message.id = 15;
 		message.length = 5;
 		message.data[0] = 'T';
 		message.data[1] = 'E';
 		message.data[2] = 'S';
 		message.data[3] = 'T';
+		uint8_t error_code = CAN_send(&message);
+		switch(error_code)
+		{
+			case 1:
+				printf("Send has failed !\n");
+				break;
+			case 2:
+				printf("Send lost arbitration !\n");
+				break;
+			case 3:
+				printf("Send aborted !\n");
+				break;
+			case 4:
+				printf("Strange!\n");
+				break;
+			case 0:
+				printf("Send succeeded !\n");
+				break;
+		}
 		
-		CAN_send(&message);
-// 		resp = CAN_receive();
-// 		
-// 		printf("Id: %d\n", resp.id);
-// 		printf("Length: %d\n", resp.length);
-// 		for(int i =0; i < resp.length; i++)
-// 		{
-// 			printf("Data[%d]: %d\n", i, (char) resp.data[i]);
-// 		}
 		
-		_delay_ms(1000/2);
+		//CanMessage_t resp;
+    		//resp = CAN_receive();
+    		//
+    		//printf("id: %d\n", resp.id);
+    		//printf("length: %d\n", resp.length);
+    		//for(int i =0; i < resp.length; i++)
+    		//{
+   	 		//printf("data[%d]: %d\n", i, (char) resp.data[i]);
+    		//}
+ 		//
+		_delay_ms(1000/20);
 		
 	}
 	

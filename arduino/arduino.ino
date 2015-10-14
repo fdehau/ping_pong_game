@@ -5,28 +5,53 @@ extern "C" {
 void setup()
 {
 
-  Serial.begin(9600);
-  CAN_init(MCP_MODE_NORMAL);
-  Serial.println("CAN_init()... OK");
-  delay(2000);
+	Serial.begin(9600);
+
+	if(CAN_init(MCP_MODE_LOOPBACK))
+{
+		Serial.println("[ERROR] MCP2515 is not in configuration mode after reset!\n");
+}	else{
+		Serial.println("CAN_init()... OK");
+}
+	delay(2000);
 }
 
 void loop()
 {
-    CanMessage_t resp;
-//     CanMessage_t resp;
-//     memset(&message, 0, sizeof(CanMessage_t));
-//     
-//     message.id = 15;
-//     message.length = 5;
-//     message.data[0] = 'T';
-//     message.data[1] = 'E';
-//     message.data[2] = 'S';
-//     message.data[3] = 'T';
-//     
-//     CAN_send(&message);
-    resp = CAN_receive();
     
+     CanMessage_t message;
+     memset(&message, 0, sizeof(CanMessage_t));
+     
+     message.id = 7;
+     message.length = 4;
+     message.data[0] = 'A';
+     message.data[1] = 'B';
+     message.data[2] = 'C';
+     message.data[3] = 'D';
+     
+	
+    byte error_code = CAN_send(&message);
+	switch(error_code)
+	{
+		case 1:
+			Serial.println("Send has failed !");
+			break;
+		case 2:
+			Serial.println("Send lost arbitration !");
+			break;
+		case 3:
+			Serial.println("Send aborted !");
+			break;
+		case 4:
+			Serial.println("Strange!");
+			break;
+		case 0:
+			Serial.println("Send succeeded !");
+			break;
+	}
+    
+	CanMessage_t resp;
+	resp = CAN_receive();
 	Serial.println("Resp");
     Serial.println(resp.id);
     Serial.println(resp.length);
