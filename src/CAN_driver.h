@@ -33,10 +33,14 @@
 #define CAN_RCV_NO_FILTERS  0b01100000
 #define CAN_RCV_NO_ROLLOVER 0b00000100
 
+enum CanMsgId {
+	DEFAULT,
+	JOY_POSITION
+};
 
 struct CanMessage
 {
-	unsigned int id;
+	enum CanMsgId id;
 	uint8_t length;
 	uint8_t data[8];
 };
@@ -45,5 +49,7 @@ typedef struct CanMessage CanMessage_t;
 void CAN_init(uint8_t mode);
 uint8_t CAN_send(CanMessage_t* message);
 CanMessage_t CAN_receive();
+void CAN_print_message(CanMessage_t* msg);
+
 
 #endif /* CAN_DRIVER_H_ */

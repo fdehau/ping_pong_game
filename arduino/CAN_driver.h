@@ -11,6 +11,8 @@
 
 #include "MCP2515_driver.h"
 #include "util.h"
+#include <Arduino.h>
+#include <HardwareSerial.h>
 
 #define CAN_TR_CTRL_REG     0x30
 #define CAN_TR_REQUEST      0b00001000
@@ -34,6 +36,7 @@
 #define CAN_RCV_NO_ROLLOVER 0b00000100
 
 
+
 struct CanMessage
 {
 	unsigned int id;
@@ -45,5 +48,6 @@ typedef struct CanMessage CanMessage_t;
 uint8_t CAN_init(uint8_t mode);
 uint8_t CAN_send(CanMessage_t* message);
 CanMessage_t CAN_receive();
+void CAN_print_message(CanMessage_t* msg);
 
 #endif /* CAN_DRIVER_H_ */

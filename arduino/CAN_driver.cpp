@@ -7,32 +7,21 @@
 
 #include "CAN_driver.h"
 
+
 uint8_t CAN_init(uint8_t mode)
 {
 	uint8_t err_code = MCP2515_init();
-	MCP2515_bit_modify(MCP_CANCTRL, MCP_MODE_MASK, mode);
+	
 	MCP2515_bit_modify(CAN_RCV_CTRL_REG, CAN_RCV_MASK, CAN_RCV_NO_FILTERS | CAN_RCV_NO_ROLLOVER);
 	MCP2515_bit_modify(MCP_CANINTE, MCP_CANINTE_RX0_FULL_ENABLE_MASK, MCP_CANINTE_RX0_FULL_ENABLE);
+	
+	MCP2515_bit_modify(MCP_CANCTRL, MCP_MODE_MASK, mode);
 	return err_code;
 }
 
 uint8_t CAN_send(CanMessage_t* message)
 {
-	while(1) {
-		uint8_t ctrl_reg_state = MCP2515_read(CAN_TR_CTRL_REG);
-		uint8_t is_loaded = ctrl_reg_state & CAN_TR_REQUEST;
-		if (!is_loaded)
-			break;
-		uint8_t has_failed = ctrl_reg_state & CAN_TR_ERR;
-		if (has_failed)
-			return 1;
-		uint8_t has_lost_arbitration = ctrl_reg_state & CAN_TR_MLOA;
-		if (has_lost_arbitration)
-			return 2;
-		uint8_t aborted = ctrl_reg_state & CAN_TR_ABTF;
-		if (aborted)
-			return 3;
-	}
+	while((MCP2515_read(CAN_TR_CTRL_REG) & CAN_TR_REQUEST)) {}
 
 	MCP2515_write(CAN_TR_ID_ADDR_1, message->id >> 3);
 	MCP2515_write(CAN_TR_ID_ADDR_2, message->id << 5);
@@ -67,4 +56,17 @@ CanMessage_t CAN_receive()
 		MCP2515_bit_modify(MCP_CANINTF,MCP_CANINTF_RX0_CLEAR_MASK,MCP_CANINTF_RX0_CLEAR);
 	}
 	return message;
+}
+
+void CAN_print_message(CanMessage_t* msg)
+{
+	Serial.print("+--- Message ");
+	Serial.print(msg->id);
+	Serial.print(" ---+\n\t");
+	int i;
+	for(i = 0; i < msg->length; i++)
+	{
+		Serial.println((int8_t)msg->data[i]);
+	}
+	Serial.println();
 }

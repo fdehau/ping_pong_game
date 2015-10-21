@@ -121,6 +121,12 @@
     <Compile Include="CAN_driver.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="CAN_test.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="CAN_test.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="font.c">
       <SubType>compile</SubType>
     </Compile>

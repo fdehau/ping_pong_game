@@ -17,21 +17,7 @@ void CAN_init(uint8_t mode)
 
 uint8_t CAN_send(CanMessage_t* message)
 {
-	while(1) {
-		uint8_t ctrl_reg_state = MCP2515_read(CAN_TR_CTRL_REG);
-		uint8_t is_loaded = ctrl_reg_state & CAN_TR_REQUEST;
-		if (!is_loaded)
-			break;
-		uint8_t has_failed = ctrl_reg_state & CAN_TR_ERR;
-		if (has_failed)
-			return 1;
-		uint8_t has_lost_arbitration = ctrl_reg_state & CAN_TR_MLOA;
-		if (has_lost_arbitration)
-			return 2;
-		uint8_t aborted = ctrl_reg_state & CAN_TR_ABTF;
-		if (aborted)
-			return 3;
-	}
+	while((MCP2515_read(CAN_TR_CTRL_REG)) & CAN_TR_REQUEST) {}
 
 	MCP2515_write(CAN_TR_ID_ADDR_1, message->id >> 3);
 	MCP2515_write(CAN_TR_ID_ADDR_2, message->id << 5);
@@ -64,4 +50,15 @@ CanMessage_t CAN_receive()
 	}
 
 	return message;
+}
+
+void CAN_print_message(CanMessage_t* msg)
+{
+	printf("+--- Message %d ---+\n", msg->id);
+	printf("\t");
+	for(int i = 0; i < msg->length; i++)
+	{
+		printf("%d ", msg->data[i]);
+	}
+	printf("\n");
 }

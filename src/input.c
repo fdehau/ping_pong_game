@@ -6,6 +6,7 @@
  */ 
 
 #include "input.h"
+#include "CAN_driver.h"
 
 void update(Input_t* input)
 {
@@ -14,6 +15,10 @@ void update(Input_t* input)
 	input->joy_direction[1] = input->joy_direction[0];
 	input->joy_direction[0] = JOY_getDirection();
 	
+	// Update joystick position
+	input->joy_position[1] = input->joy_position[0];
+	input->joy_position[0] = JOY_getPosition();
+	
 	// Update enter button state
 	input->enter_button[1] = input->enter_button[0];
 	input->enter_button[0] = JOY_getButton(JOY_ENTER_BUTTON);
@@ -21,6 +26,7 @@ void update(Input_t* input)
 	// Update back button state
 	input->back_button[1] = input->back_button[0];
 	input->back_button[0] = JOY_getButton(JOY_BACK_BUTTON);
+
 }
 
 int is_enter_pressed(Input_t* input)
@@ -45,4 +51,16 @@ enum SWIPE get_gesture(Input_t* input)
 		return SWIPE_RIGHT;
 	else 
 		return SWIPE_NEUTRAL;
-};	
+};
+
+void send_joystick_position(Input_t* input)
+{
+	CanMessage_t message;
+	message.id = JOY_POSITION;
+	message.length = 3;
+	message.data[0] = input->joy_direction[0];
+	message.data[1] = input->joy_position[0].X;
+	message.data[2] = input->joy_position[0].Y;
+	CAN_print_message(&message);
+	CAN_send(&message);
+}

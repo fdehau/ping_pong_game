@@ -13,13 +13,17 @@ uint8_t MCP2515_init()
 	
 	SPI_init();
 	MCP2515_reset();
-	
+
 	value = MCP2515_read(MCP_CANSTAT);
-	if ((value & MCP_MODE_MASK) != MCP_MODE_CONFIG)
+	//Wait for MCP to change modes
+	while((value & MCP_MODE_MASK) != MCP_MODE_CONFIG)
 	{
+		value = MCP2515_read(MCP_CANSTAT);
+		MCP2515_reset();
 		printf("[ERROR] MCP2515 is not in configuration mode after reset!\n");
-		return 1;
 	}
+	printf("MCP2515 configuration mode... OK\n");
+	
 	return 0;
 }
 
@@ -85,9 +89,9 @@ void MCP2515_bit_modify(uint8_t reg, uint8_t mask, uint8_t data)
 
 void MCP2515_reset()
 {
-	PORTB &= ~(1 << PINB4);
+	PORTB &= ~(1 << PB4);
 	
 	SPI_send(MCP_RESET);
 	
-	PORTB |= (1 << PINB4);
+	PORTB |= (1 << PB4);
 }
