@@ -113,8 +113,6 @@ int main(void)
 			OLED_clr();
 			menu_draw(active_menu, 2);
 		}
-    
-		_delay_ms(1000/5);
 		
 	}
 	

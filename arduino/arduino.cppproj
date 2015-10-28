@@ -580,6 +580,12 @@ build.arch=AVR
     <Compile Include="MCP2515_driver.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="motor_driver.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="motor_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="servo_driver.cpp">
       <SubType>compile</SubType>
     </Compile>

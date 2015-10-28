@@ -8,13 +8,22 @@ void setup()
 {
 	Serial.begin(9600);
 	servo_init();
-	//CAN_test_normal_receive();
-	//delay(2000);
+	
+	CAN_init(MCP_MODE_NORMAL);
+	delay(2000);
 }
 
 void loop()
 {
-	//analogWrite(3,50);
-	delay(200);
+	CanMessage_t resp;
 	
+	while(1)
+	{
+		resp = CAN_receive();
+		if (resp.id == JOY_POSITION)
+		{
+			servo_joystick_control((int8_t) resp.data[1]);
+		}
+		CAN_print_message(&resp);
+	}
 }

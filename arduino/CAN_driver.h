@@ -35,7 +35,10 @@
 #define CAN_RCV_NO_FILTERS  0b01100000
 #define CAN_RCV_NO_ROLLOVER 0b00000100
 
-
+enum CanMsgId {
+	DEFAULT_ID,
+	JOY_POSITION
+};
 
 struct CanMessage
 {
