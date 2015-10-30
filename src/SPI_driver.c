@@ -13,7 +13,7 @@ void SPI_init()
 	DDRB = (1 << DDB5) | (1 << DDB7) | (1 << DDB4);
 	DDRB &= ~(1 << PB6);
 	PORTB |= (1 << PB6);
-	SPCR |= (1 << SPE) | (1 << MSTR) | (1 << SPR0);
+	SPCR |= (1 << SPE) | (1 << MSTR) | (1 << SPR1) | (1 << SPR0);
 }
 
 void SPI_send(uint8_t data)

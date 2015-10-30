@@ -31,6 +31,7 @@ typedef enum MenuDirection MenuDirection_t;
 
 Menu_t* menu_create(const char* content);
 void menu_free(Menu_t* menu);
+void menu_set_title(Menu_t* menu, char* title);
 void menu_add(Menu_t* prev, Menu_t* new_item);
 void menu_draw(Menu_t* item, int line);
 

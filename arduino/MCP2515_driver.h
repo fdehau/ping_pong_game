@@ -9,9 +9,9 @@
 #ifndef MCP2515_DRIVER_H_
 #define MCP2515_DRIVER_H_
 
-#include <avr/io.h>
+#include <Arduino.h>
+
 #include <stdint-gcc.h>
-#include <stdio.h>
 #include <string.h>
 
 #include "SPI_driver.h"

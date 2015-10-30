@@ -53,7 +53,7 @@ CanMessage_t CAN_receive()
 			message.data[i] = MCP2515_read(CAN_RCV_DATA_ADDR + i);
 		}
 		
-		MCP2515_bit_modify(MCP_CANINTF,MCP_CANINTF_RX0_CLEAR_MASK,MCP_CANINTF_RX0_CLEAR);
+		MCP2515_bit_modify(MCP_CANINTF, MCP_CANINTF_RX0_CLEAR_MASK, MCP_CANINTF_RX0_CLEAR);
 	}
 	return message;
 }

@@ -6,7 +6,6 @@
  */ 
 
 #include "motor_driver.h"
-#include <Wire/Wire.h>
 
 void motor_init() {
 	

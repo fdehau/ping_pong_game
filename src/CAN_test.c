@@ -43,7 +43,7 @@ void CAN_test_normal_send(){
 	{
 		CAN_send(&message);
 		printf("Message sent!\n");
-		_delay_ms(200);
+		//_delay_ms(200);
 	}
 }
 void CAN_test_normal_receive()

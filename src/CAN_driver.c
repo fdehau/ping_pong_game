@@ -10,14 +10,17 @@
 void CAN_init(uint8_t mode)
 {
 	MCP2515_init();
-	MCP2515_bit_modify(MCP_CANCTRL, MCP_MODE_MASK, mode);
+	
 	MCP2515_bit_modify(CAN_RCV_CTRL_REG, CAN_RCV_MASK, CAN_RCV_NO_FILTERS | CAN_RCV_NO_ROLLOVER);
 	MCP2515_bit_modify(MCP_CANINTE, MCP_CANINTE_RX0_FULL_ENABLE_MASK, MCP_CANINTE_RX0_FULL_ENABLE);
+	
+	MCP2515_bit_modify(MCP_CANCTRL, MCP_MODE_MASK, mode);
 }
 
 uint8_t CAN_send(CanMessage_t* message)
 {
-	while((MCP2515_read(CAN_TR_CTRL_REG)) & CAN_TR_REQUEST) {}
+	int count = 0;
+	while(MCP2515_read(CAN_TR_CTRL_REG) & CAN_TR_REQUEST) { if(count++ > 30) return;}
 
 	MCP2515_write(CAN_TR_ID_ADDR_1, message->id >> 3);
 	MCP2515_write(CAN_TR_ID_ADDR_2, message->id << 5);
@@ -36,7 +39,7 @@ CanMessage_t CAN_receive()
 	
 	memset(&message, 0, sizeof(CanMessage_t));
 	
-	if(MCP2515_read(MCP_CANINTF) & MCP_CANINTF_RX0_TEST){
+	if (MCP2515_read(MCP_CANINTF) & MCP_CANINTF_RX0_TEST){
 		uint8_t id_part1 = MCP2515_read(CAN_RCV_ID_ADDR_1) << 3;
 		uint8_t id_part2 = MCP2515_read(CAN_RCV_ID_ADDR_2) >> 5;
 		message.id = id_part1 | id_part2;
@@ -46,7 +49,7 @@ CanMessage_t CAN_receive()
 			message.data[i] = MCP2515_read(CAN_RCV_DATA_ADDR + i);
 		}
 
-		MCP2515_bit_modify(MCP_CANINTF,MCP_CANINTF_RX0_CLEAR_MASK,MCP_CANINTF_RX0_CLEAR);
+		MCP2515_bit_modify(MCP_CANINTF, MCP_CANINTF_RX0_CLEAR_MASK, MCP_CANINTF_RX0_CLEAR);
 	}
 
 	return message;

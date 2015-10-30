@@ -45,6 +45,13 @@ void menu_add(Menu_t* parent, Menu_t* child)
 	child->parent = parent;
 }
 
+void menu_set_title(Menu_t* menu, char* title)
+{
+	free(menu->title);
+	menu->title = malloc(strlen(title) + 1);
+	strcpy(menu->title, title);
+}
+
 void menu_draw(Menu_t* menu, int line)
 {
 	OLED_goto_line(0);
@@ -67,6 +74,8 @@ Menu_t* menu_create_start_menu()
 	menu_add(main_menu, high_scores_menu);
 	Menu_t* settings_menu = menu_create("Settings");
 	menu_add(main_menu, settings_menu);
+	Menu_t* scores_menu = menu_create("Score: 0");
+	menu_add(main_menu, scores_menu);
 	return main_menu;
 }
 

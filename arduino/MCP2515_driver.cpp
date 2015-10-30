@@ -13,16 +13,15 @@ uint8_t MCP2515_init()
 	
 	SPI_init();
 	MCP2515_reset();
-	
 	value = MCP2515_read(MCP_CANSTAT);
 	//Wait for MCP to change modes
 	while((value & MCP_MODE_MASK) != MCP_MODE_CONFIG)
 	{
 		value = MCP2515_read(MCP_CANSTAT);
 		MCP2515_reset();
-		printf("[ERROR] MCP2515 is not in configuration mode after reset!\n");
+		Serial.println("[ERROR] MCP2515 is not in configuration mode after reset!\n");
 	}
-	printf("MCP2515 configuration mode... OK\n");
+	Serial.println("MCP2515 configuration mode... OK\n");
 	
 	return 0;
 }

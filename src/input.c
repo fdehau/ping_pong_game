@@ -56,11 +56,15 @@ enum SWIPE get_gesture(Input_t* input)
 void send_joystick_position(Input_t* input)
 {
 	CanMessage_t message;
-	message.id = JOY_POSITION;
-	message.length = 3;
-	message.data[0] = input->joy_direction[0];
-	message.data[1] = input->joy_position[0].X;
-	message.data[2] = input->joy_position[0].Y;
-	CAN_print_message(&message);
-	CAN_send(&message);
+
+	if (input->joy_position[0].X != input->joy_position[1].X ||
+		input->joy_position[0].Y != input->joy_position[1].Y) {
+		message.id = JOY_POSITION;
+		message.length = 3;
+		message.data[0] = input->joy_direction[0];
+		message.data[1] = input->joy_position[0].X;
+		message.data[2] = input->joy_position[0].Y;
+		CAN_print_message(&message);
+		CAN_send(&message);
+	}
 }

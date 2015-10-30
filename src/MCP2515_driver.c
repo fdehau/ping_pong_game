@@ -4,7 +4,7 @@
  * Created: 30.09.2015 12:33:42
  *  Author: vegasten
  */ 
-
+#include <avr/delay.h>
 #include "MCP2515_driver.h"
 
 uint8_t MCP2515_init()
@@ -13,7 +13,7 @@ uint8_t MCP2515_init()
 	
 	SPI_init();
 	MCP2515_reset();
-
+	_delay_ms(50);
 	value = MCP2515_read(MCP_CANSTAT);
 	//Wait for MCP to change modes
 	while((value & MCP_MODE_MASK) != MCP_MODE_CONFIG)

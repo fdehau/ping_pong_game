@@ -63,16 +63,29 @@ int main(void)
 	USART_init();
 	JOY_init();
 	OLED_init();
-	
+	//CAN_test_normal_send();
 	CAN_init(MCP_MODE_NORMAL);
 
 	Menu_t* active_menu = menu_create_start_menu();
 	Input_t input;
 	OLED_clr();
 	menu_draw(active_menu, 2);
+	CanMessage_t resp;
 
 	while(1)
 	{
+		// Receive
+		resp = CAN_receive();
+		if (resp.id == SCORE)
+		{
+			if (active_menu->length > 3) {
+				char tmp[50];
+				sprintf(tmp, "Score: %d", resp.data[0]);
+				menu_set_title(active_menu->children[3], tmp);
+				printf("Score updated: %d\n", resp.data[0]);
+			}
+		}
+		
 		// Update
 		update(&input);
 		send_joystick_position(&input);
@@ -113,7 +126,6 @@ int main(void)
 			OLED_clr();
 			menu_draw(active_menu, 2);
 		}
-		
 	}
 	
 	//OLED_pos(1, i++, 13 * FONT_WIDTH);//10 * FONT_WIDTH);

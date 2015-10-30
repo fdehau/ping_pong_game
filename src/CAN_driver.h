@@ -35,7 +35,8 @@
 
 enum CanMsgId {
 	DEFAULT,
-	JOY_POSITION
+	JOY_POSITION,
+	SCORE
 };
 
 struct CanMessage

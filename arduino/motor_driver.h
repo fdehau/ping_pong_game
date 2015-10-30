@@ -9,7 +9,8 @@
 #ifndef MOTOR_DRIVER_H_
 #define MOTOR_DRIVER_H_
 
-#include "Arduino.h"
+#include <Arduino.h>
+#include <Wire/Wire.h>
 
 #define DAC_ADRESS 0b00101111
 
