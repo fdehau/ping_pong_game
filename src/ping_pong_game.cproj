@@ -148,6 +148,12 @@
     <Compile Include="menu.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="solenoid_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="solenoid_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="SPI_driver.c">
       <SubType>compile</SubType>
     </Compile>

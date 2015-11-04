@@ -19,8 +19,7 @@ void CAN_init(uint8_t mode)
 
 uint8_t CAN_send(CanMessage_t* message)
 {
-	int count = 0;
-	while(MCP2515_read(CAN_TR_CTRL_REG) & CAN_TR_REQUEST) { if(count++ > 30) return;}
+	while(MCP2515_read(CAN_TR_CTRL_REG) & CAN_TR_REQUEST) {}
 
 	MCP2515_write(CAN_TR_ID_ADDR_1, message->id >> 3);
 	MCP2515_write(CAN_TR_ID_ADDR_2, message->id << 5);

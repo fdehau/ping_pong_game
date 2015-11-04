@@ -12,13 +12,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//#include "util.h"
-// #include "ADC_driver.h"
 #include "JOYSTICK_driver.h"
 #include "UART_driver.h"
 #include "OLED_driver.h"
 #include "CAN_driver.h"
 #include "CAN_test.h"
+#include "solenoid_driver.h"
 #include "input.h"
 #include "menu.h"
 
@@ -63,6 +62,8 @@ int main(void)
 	USART_init();
 	JOY_init();
 	OLED_init();
+	solenoid_init();
+	//CAN_test_loopback();
 	//CAN_test_normal_send();
 	CAN_init(MCP_MODE_NORMAL);
 
@@ -74,18 +75,6 @@ int main(void)
 
 	while(1)
 	{
-		// Receive
-		resp = CAN_receive();
-		if (resp.id == SCORE)
-		{
-			if (active_menu->length > 3) {
-				char tmp[50];
-				sprintf(tmp, "Score: %d", resp.data[0]);
-				menu_set_title(active_menu->children[3], tmp);
-				printf("Score updated: %d\n", resp.data[0]);
-			}
-		}
-		
 		// Update
 		update(&input);
 		send_joystick_position(&input);
@@ -111,11 +100,24 @@ int main(void)
 				active_menu = active_menu->selected;
 				event_flag = 1;
 			}
+			solenoid_fire();
 		}
 		if(is_back_pressed(&input)){
 			if(active_menu->parent)
 			{
 				active_menu = active_menu->parent;
+				event_flag = 1;
+			}
+		}
+		
+		// Receive
+		resp = CAN_receive();
+		if (resp.id == SCORE)
+		{
+			if (active_menu->length > 3) {
+				char tmp[50];
+				sprintf(tmp, "Score: %d", resp.data[0] << 8 | resp.data[1]);
+				menu_set_title(active_menu->children[3], tmp);
 				event_flag = 1;
 			}
 		}
