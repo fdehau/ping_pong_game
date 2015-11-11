@@ -5,9 +5,22 @@
 #include "servo_driver.h"
 #include <Wire/Wire.h>
 #include "motor_driver.h"
+#include "controller_driver.h"
+#include <stdio.h>
 
-unsigned long start, current;
+unsigned long start, last, current;
 uint32_t score = 0;
+
+Controller controller;
+int16_t encoder_state;
+
+int uart_hack(char c, FILE* f){
+	while(!(UCSR0A & (1<<UDRE0)));
+	UDR0 = c;
+	return 1;
+}
+
+//static FILE* f = FDEV_SETUP_STREAM(uart_hack, NULL, _FDEV_SETUP_READ);
 
 void setup()
 {
@@ -16,8 +29,12 @@ void setup()
 	ir_init();
 	servo_init();
 	motor_init();
+	controller_calibrate(&controller);
+	
+	start = last = current = millis();
 	
 	Serial.begin(9600);
+	fdevopen(uart_hack, NULL);
 }
 #define SCORE_TIMEOUT 1000
 
@@ -29,13 +46,16 @@ void loop()
 	
 	while(1)
 	{
+		last = current;
+		current = millis() - start;
 		
-		start = millis();
 		resp = CAN_receive();
-		if (resp.id == JOY_POSITION)
+		if (resp.id == INPUT_ID)
 		{
 			servo_joystick_control((int8_t) resp.data[1]);
 			motor_control((int8_t) resp.data[1]);
+			uint8_t left_slider = resp.data[3];
+			//controller_set_reference(&controller, left_slider);
 			//CAN_print_message(&resp);
 		}
 		
@@ -55,7 +75,8 @@ void loop()
 			}
 			last_ball = millis();
 		}
-		current = millis();
-		score += (int)(current - start);
+		score += (int)(current - last);
+		
+		controller_pi(&controller, (int) current - last);
 	}
 }

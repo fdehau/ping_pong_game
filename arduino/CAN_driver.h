@@ -37,7 +37,7 @@
 
 enum CanMsgId {
 	DEFAULT_ID,
-	JOY_POSITION,
+	INPUT_ID,
 	SCORE
 };
 

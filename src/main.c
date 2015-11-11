@@ -77,7 +77,7 @@ int main(void)
 	{
 		// Update
 		update(&input);
-		send_joystick_position(&input);
+		send_input(&input);
 		
 		// Process events
 		int event_flag = 0;

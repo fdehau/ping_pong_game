@@ -26,6 +26,10 @@ void update(Input_t* input)
 	// Update back button state
 	input->back_button[1] = input->back_button[0];
 	input->back_button[0] = JOY_getButton(JOY_BACK_BUTTON);
+	
+	// Update left slider
+	input->left_slider[1] = input->left_slider[0];
+	input->left_slider[0] = JOY_getButton(JOY_LEFT_SLIDER);
 
 }
 
@@ -53,17 +57,20 @@ enum SWIPE get_gesture(Input_t* input)
 		return SWIPE_NEUTRAL;
 };
 
-void send_joystick_position(Input_t* input)
+void send_input(Input_t* input)
 {
 	CanMessage_t message;
 
 	if (input->joy_position[0].X != input->joy_position[1].X ||
-		input->joy_position[0].Y != input->joy_position[1].Y) {
-		message.id = JOY_POSITION;
-		message.length = 3;
+		input->joy_position[0].Y != input->joy_position[1].Y ||
+		input->left_slider[0] != input->left_slider[1])
+	{
+		message.id = INPUT_ID;
+		message.length = 4;
 		message.data[0] = input->joy_direction[0];
 		message.data[1] = input->joy_position[0].X;
 		message.data[2] = input->joy_position[0].Y;
+		message.data[3] = input->left_slider[0];
 		CAN_print_message(&message);
 		CAN_send(&message);
 	}

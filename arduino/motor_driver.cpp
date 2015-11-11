@@ -21,7 +21,8 @@ void motor_init() {
 	pinMode(20, OUTPUT); // SDA
 	pinMode(21, OUTPUT); // SCL
 	
-	DDRK = 0;
+	DDRK &= 0;
+	PORTK |= 1;
 	
 	motor_enable_output(1);
 	motor_reset();
@@ -29,8 +30,42 @@ void motor_init() {
 	motor_enable(1);
 	
 	motor_set_direction(1);
+	
 }
 
+void controller_calibrate(Controller* controller)
+{
+	controller->KP = 1;
+	controller->KI = 1;
+
+	motor_control(-80);
+	_delay_ms(1000);
+	motor_reset();
+	//int16_t after_reset = -motor_read();
+	motor_control(80);
+	_delay_ms(800);
+	controller->max_encoder_value = -motor_read(); //- after_reset;
+	controller_set_reference(controller, 255);
+	motor_control(0);
+}
+
+void controller_set_reference(Controller* controller, uint8_t value)
+{
+	controller->reference = (int16_t) value;
+}
+
+void controller_pi(Controller* controller, int16_t dt)
+{
+	int16_t current = - (int32_t) motor_read() * 255 / controller->max_encoder_value;
+	int16_t error = controller->reference - current;
+	controller->integral += error * dt / 1000;
+	controller->error = error;
+	int16_t output = controller->KP * error + controller->KI * controller->integral;
+	int16_t command = output / 2;
+	//printf("Dt: %d | Current: %d | Reference: %d | Error:%d | Max: %d | Integral: %d |Output: %d | Command: %d\n", dt, current, controller->reference, error, controller->max_encoder_value, controller->integral, output, (int8_t) command);
+	motor_control((int8_t) command);
+	controller->last_output = output;
+}
 
 
 void motor_write(uint8_t speed) {
@@ -44,9 +79,28 @@ void motor_write(uint8_t speed) {
 }
 
 
-void motor_read() {
-	
+static inline uint8_t reverse_bits(uint8_t x){
+	x = (((x & 0xaa) >> 1) | ((x & 0x55) << 1));
+	x = (((x & 0xcc) >> 2) | ((x & 0x33) << 2));
+	x = (((x & 0xf0) >> 4) | ((x & 0x0f) << 4));
+	return x;
 
+}
+
+int16_t motor_read() {
+	
+	motor_enable_output(1);
+	motor_select_encoder_byte(0);
+	_delay_us(20);
+	uint16_t high_byte = reverse_bits(PINK);
+	
+	motor_select_encoder_byte(1);
+	_delay_us(20);
+	uint16_t low_byte = reverse_bits(PINK);
+	
+	motor_enable_output(0);
+	
+	return (high_byte << 8) + low_byte;
 }
 
 
@@ -55,9 +109,9 @@ void motor_enable_output(uint8_t enable) {
 }
 
 void motor_reset() {
-	digitalWrite(A6, HIGH);
-	delayMicroseconds(20);
 	digitalWrite(A6, LOW);
+	delayMicroseconds(50);
+	digitalWrite(A6, HIGH);
 }
 
 void motor_select_encoder_byte(uint8_t high) {

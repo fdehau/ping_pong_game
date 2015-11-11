@@ -14,16 +14,32 @@
 
 #define DAC_ADRESS 0b0101000
 
+typedef struct
+{
+	int16_t position;
+	int16_t max_encoder_value;
+	int16_t reference;
+	int16_t KP;
+	int16_t KI;
+	int16_t error;
+	int16_t integral;
+	int16_t last_output;
+} Controller;
+
 void motor_init();
 void motor_set_direction(uint8_t direction);
 void motor_write(uint8_t speed);
-void motor_read();
-
+int16_t motor_read();
 
 void motor_enable_output(uint8_t enable);
 void motor_reset();
 void motor_select_encoder_byte(uint8_t high);
 void motor_enable(uint8_t enable);
 void motor_control(int8_t value);
+
+void controller_calibrate(Controller* controller);
+void controller_set_reference(Controller* controller, uint8_t value);
+void controller_pi(Controller* controller, int16_t dt);
+
 
 #endif /* MOTOR_DRIVER_H_ */
