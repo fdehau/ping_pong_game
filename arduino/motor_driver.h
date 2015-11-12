@@ -3,7 +3,7 @@
  *
  * Created: 28.10.2015 17:12:12
  *  Author: vegasten
- */ 
+ */
 
 
 #ifndef MOTOR_DRIVER_H_
@@ -16,19 +16,19 @@
 
 typedef struct
 {
-	int16_t position;
-	int16_t max_encoder_value;
-	int16_t reference;
-	int16_t KP;
-	int16_t KI;
-	int16_t error;
-	int16_t integral;
-	int16_t last_output;
+    int16_t position;
+    int16_t max_encoder_value;
+    int16_t reference;
+    int16_t KP;
+    int16_t KI;
+    int16_t error;
+    int16_t integral;
+    int16_t last_output;
 } Controller;
 
-void motor_init();
-void motor_set_direction(uint8_t direction);
-void motor_write(uint8_t speed);
+void    motor_init();
+void    motor_set_direction(uint8_t direction);
+void    motor_write(uint8_t speed);
 int16_t motor_read();
 
 void motor_enable_output(uint8_t enable);

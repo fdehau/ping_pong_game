@@ -3,7 +3,7 @@
  *
  * Created: 30.09.2015 12:33:21
  *  Author: vegasten
- */ 
+ */
 
 
 #ifndef MCP2515_DRIVER_H_
@@ -38,16 +38,16 @@
 #define MCP_RTS_TXB2 0b10000100
 
 
-#define MCP_CANINTE		0x2B
+#define MCP_CANINTE     0x2B
 
-#define MCP_CANINTE_RX0_FULL_ENABLE			0xFF
+#define MCP_CANINTE_RX0_FULL_ENABLE         0xFF
 #define MCP_CANINTE_RX0_FULL_ENABLE_MASK    0b00000001
 
-#define MCP_CANINTE_RX0_FULL_DISABLE		0x00
+#define MCP_CANINTE_RX0_FULL_DISABLE        0x00
 #define MCP_CANINTE_RX0_FULL_DISABLE_MASK   0b00000001
 
 
-#define MCP_CANINTF		0x2C
+#define MCP_CANINTF     0x2C
 
 #define MCP_CANINTF_RX0_CLEAR      0x00
 #define MCP_CANINTF_RX0_CLEAR_MASK 0b00000001
@@ -61,9 +61,9 @@
 uint8_t MCP2515_init();
 uint8_t MCP2515_read(uint8_t address);
 uint8_t MCP2515_read_status();
-void MCP2515_write(uint8_t address, const uint8_t data);
-void MCP2515_request_to_send(uint8_t buffer);
-void MCP2515_bit_modify(uint8_t reg, uint8_t mask, uint8_t data);
-void MCP2515_reset();
+void    MCP2515_write(uint8_t address, const uint8_t data);
+void    MCP2515_request_to_send(uint8_t buffer);
+void    MCP2515_bit_modify(uint8_t reg, uint8_t mask, uint8_t data);
+void    MCP2515_reset();
 
 #endif /* MCP2515_DRIVER_H_ */

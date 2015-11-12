@@ -1,17 +1,15 @@
-/*
- * CAN_test.h
- *
- * Created: 21.10.2015 13:00:31
- *  Author: vegasten
- */ 
-
+/**
+ * @file CAN_test.c
+ * @authors Vegard Stengrundet, Florian Dehau
+ * @date 12 Nov 2015
+ * @brief Test suite for the CAN protocol
+ */
 
 #ifndef CAN_TEST_H_
 #define CAN_TEST_H_
 
 #include "CAN_driver.h"
-#define F_CPU 4915200
-#include <util/delay.h>
+#include "util.h"
 
 void CAN_test_loopback();
 void CAN_test_normal_send();

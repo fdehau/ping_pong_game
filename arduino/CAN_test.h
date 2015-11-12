@@ -3,7 +3,7 @@
  *
  * Created: 21.10.2015 13:00:31
  *  Author: vegasten
- */ 
+ */
 
 
 #ifndef CAN_TEST_H_

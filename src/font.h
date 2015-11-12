@@ -1,10 +1,9 @@
-/*
- * font.h
- *
- * Created: 16.09.2015 13:15:17
- *  Author: vegasten
- */ 
-
+/**
+ * @file font.h
+ * @author Vegard Stengrundet, Florian Dehau
+ * @date 12 Nov 2015
+ * @brief Font characters and util function to access them
+ */
 
 #ifndef FONT_H_
 #define FONT_H_
@@ -15,7 +14,7 @@
 
 const unsigned char font_5[95][5];
 
-const unsigned char* get_char(char c);
+const unsigned char * get_char(char c);
 
 
 #endif /* FONT_H_ */

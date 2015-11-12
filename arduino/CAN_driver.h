@@ -3,7 +3,7 @@
  *
  * Created: 30.09.2015 15:12:58
  *  Author: vegasten
- */ 
+ */
 
 
 #ifndef CAN_DRIVER_H_
@@ -35,23 +35,24 @@
 #define CAN_RCV_NO_FILTERS  0b01100000
 #define CAN_RCV_NO_ROLLOVER 0b00000100
 
-enum CanMsgId {
-	DEFAULT_ID,
-	INPUT_ID,
-	SCORE
+enum CanMsgId
+{
+    DEFAULT_ID,
+    INPUT_ID,
+    SCORE
 };
 
 struct CanMessage
 {
-	unsigned int id;
-	uint8_t length;
-	uint8_t data[8];
+    unsigned int id;
+    uint8_t length;
+    uint8_t data[8];
 };
 typedef struct CanMessage CanMessage_t;
 
-uint8_t CAN_init(uint8_t mode);
-uint8_t CAN_send(CanMessage_t* message);
+uint8_t      CAN_init(uint8_t mode);
+uint8_t      CAN_send(CanMessage_t* message);
 CanMessage_t CAN_receive();
-void CAN_print_message(CanMessage_t* msg);
+void         CAN_print_message(CanMessage_t* msg);
 
 #endif /* CAN_DRIVER_H_ */

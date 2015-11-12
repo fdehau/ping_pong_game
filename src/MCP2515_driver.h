@@ -1,10 +1,10 @@
 /*
- * MCP2515_driver.h
- *
- * Created: 30.09.2015 12:33:21
- *  Author: vegasten
- */ 
-
+ * @file MCP2515_driver.h
+ * @authors Vegard Stengrundet, Florian Dehau
+ * @date 12 Nov 2015
+ * @brief Provides basic interface with the MCP2515 chip (read, write, ...)
+ *        through SPI
+ */
 
 #ifndef MCP2515_DRIVER_H_
 #define MCP2515_DRIVER_H_
@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "util.h"
 #include "SPI_driver.h"
 
 #define MCP_CANSTAT       0b00001110
@@ -37,28 +38,24 @@
 #define MCP_RTS_TXB1 0b10000010
 #define MCP_RTS_TXB2 0b10000100
 
-#define MCP_CANINTE		0x2B
-
-#define MCP_CANINTE_RX0_FULL_ENABLE			0xFF
+#define MCP_CANINTE                         0x2B
+#define MCP_CANINTE_RX0_FULL_ENABLE         0xFF
 #define MCP_CANINTE_RX0_FULL_ENABLE_MASK    0b00000001
-
-#define MCP_CANINTE_RX0_FULL_DISABLE		0x00
+#define MCP_CANINTE_RX0_FULL_DISABLE        0x00
 #define MCP_CANINTE_RX0_FULL_DISABLE_MASK   0b00000001
 
 
-#define MCP_CANINTF		0x2C
-
+#define MCP_CANINTF                0x2C
 #define MCP_CANINTF_RX0_CLEAR      0x00
 #define MCP_CANINTF_RX0_CLEAR_MASK 0b00000001
-
 #define MCP_CANINTF_RX0_TEST       0b00000001
 
-uint8_t MCP2515_init();
+void    MCP2515_init();
 uint8_t MCP2515_read(uint8_t address);
 uint8_t MCP2515_read_status();
-void MCP2515_write(uint8_t address, const uint8_t data);
-void MCP2515_request_to_send(uint8_t buffer);
-void MCP2515_bit_modify(uint8_t reg, uint8_t mask, uint8_t data);
-void MCP2515_reset();
+void    MCP2515_write(uint8_t address, const uint8_t data);
+void    MCP2515_request_to_send(uint8_t buffer);
+void    MCP2515_bit_modify(uint8_t reg, uint8_t mask, uint8_t data);
+void    MCP2515_reset();
 
 #endif /* MCP2515_DRIVER_H_ */
