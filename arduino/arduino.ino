@@ -52,7 +52,9 @@ void loop()
         resp = CAN_receive();
         if (resp.id == INPUT_ID)
         {
-            servo_joystick_control((int8_t) resp.data[1]);
+			int8_t right_slider = resp.data[3] - 256 / 2;
+			printf("Right slider: %d\n", right_slider);
+            servo_joystick_control(right_slider);
             controller_set_reference(&controller, (int8_t) resp.data[1]);
             //CAN_print_message(&resp);
         }

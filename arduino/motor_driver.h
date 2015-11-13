@@ -13,7 +13,7 @@
 #include <Wire/Wire.h>
 
 #define DAC_ADRESS 0b0101000
-#define INPUT_COEFF 10
+#define INPUT_COEFF 12
 
 typedef struct
 {
