@@ -109,76 +109,76 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ADC_driver.c">
+    <Compile Include="com\ADC_driver.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="ADC_driver.h">
+    <Compile Include="com\ADC_driver.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="CAN_driver.c">
+    <Compile Include="com\CAN_driver.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="CAN_driver.h">
+    <Compile Include="com\CAN_driver.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="CAN_test.c">
+    <Compile Include="com\CAN_test.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="CAN_test.h">
+    <Compile Include="com\CAN_test.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="font.c">
+    <Compile Include="com\MCP2515_driver.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="input.c">
+    <Compile Include="com\MCP2515_driver.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="input.h">
+    <Compile Include="com\SPI_driver.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="MCP2515_driver.c">
+    <Compile Include="com\SPI_driver.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="MCP2515_driver.h">
+    <Compile Include="com\UART_driver.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="menu.c">
+    <Compile Include="com\UART_driver.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="menu.h">
+    <Compile Include="display\font.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="solenoid_driver.c">
+    <Compile Include="display\font.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="solenoid_driver.h">
+    <Compile Include="display\menu.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="SPI_driver.c">
+    <Compile Include="display\menu.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="SPI_driver.h">
+    <Compile Include="display\OLED_driver.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="UART_driver.c">
+    <Compile Include="display\OLED_driver.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="UART_driver.h">
+    <Compile Include="input\input.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="font.h">
+    <Compile Include="input\input.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="JOYSTICK_driver.c">
+    <Compile Include="input\JOYSTICK_driver.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="JOYSTICK_driver.h">
+    <Compile Include="input\JOYSTICK_driver.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="OLED_driver.c">
+    <Compile Include="input\solenoid_driver.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="OLED_driver.h">
+    <Compile Include="input\solenoid_driver.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
@@ -187,6 +187,11 @@
     <Compile Include="util.h">
       <SubType>compile</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="com" />
+    <Folder Include="input" />
+    <Folder Include="display" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

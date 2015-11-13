@@ -9,7 +9,7 @@
 #define CAN_DRIVER_H_
 
 #include "MCP2515_driver.h"
-#include "util.h"
+#include "../util.h"
 
 #define CAN_TR_CTRL_REG     0x30
 #define CAN_TR_REQUEST      0b00001000

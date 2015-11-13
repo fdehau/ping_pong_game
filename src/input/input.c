@@ -8,7 +8,7 @@
  */
 
 #include "input.h"
-#include "CAN_driver.h"
+#include "../com/CAN_driver.h"
 
 /**
  * @brief Update current input states (store 2 last states)

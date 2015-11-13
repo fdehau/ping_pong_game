@@ -8,11 +8,8 @@
 #include "controller_driver.h"
 #include <stdio.h>
 
-unsigned long start, last, current;
-uint32_t      score = 0;
 
 Controller controller;
-int16_t    encoder_state;
 
 int uart_hack(char c, FILE* f)
 {
@@ -33,8 +30,6 @@ void setup()
     motor_init();
     controller_calibrate(&controller);
 
-    start = last = current = millis();
-
     Serial.begin(9600);
     fdevopen(uart_hack, NULL);
 }
@@ -43,27 +38,30 @@ void setup()
 void loop()
 {
     CanMessage_t resp;
-
+	uint32_t last, current = 0;
+	uint32_t score = 0;
+	uint8_t playing = 0;
     uint32_t last_ball = 0;
 
     while (1)
     {
-        last    = current;
-        current = millis() - start;
+        current = millis();
 
         resp = CAN_receive();
         if (resp.id == INPUT_ID)
         {
             servo_joystick_control((int8_t) resp.data[1]);
-            motor_control((int8_t) resp.data[1]);
-            uint8_t left_slider = resp.data[3];
-            //controller_set_reference(&controller, left_slider);
-            //CAN_print_message(&resp);
+            controller_set_reference(&controller, (int8_t) resp.data[1]);
+            CAN_print_message(&resp);
         }
+		else if(resp.id == SCORE)
+		{
+			score = 0;
+			playing = 1;
+		}
 
         if (ir_check() == 1)
         {
-            Serial.println(millis() - last_ball);
             if ((millis() - last_ball) > SCORE_TIMEOUT)
             {
                 CanMessage_t message;
@@ -72,14 +70,17 @@ void loop()
                 message.data[0] = score >> 8;
                 message.data[1] = score;
                 CAN_send(&message);
-                Serial.print("Score updated: ");
-                Serial.println(score);
-                score = 0;
+                printf("Score updated: %d\n", score);
+                playing = 0;
             }
             last_ball = millis();
         }
-        score += (int)(current - last);
+		
+        score += (current - last);
 
-        controller_pi(&controller, (int) current - last);
+		if (playing)
+			controller_pi(&controller, (int) current - last);
+		
+		last = current;
     }
 }

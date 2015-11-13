@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "util.h"
+#include "../util.h"
 #include "SPI_driver.h"
 
 #define MCP_CANSTAT       0b00001110

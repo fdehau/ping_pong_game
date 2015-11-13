@@ -66,13 +66,10 @@ CanMessage_t CAN_receive()
 
 void CAN_print_message(CanMessage_t* msg)
 {
-    Serial.print("+--- Message ");
-    Serial.print(msg->id);
-    Serial.print(" ---+\n\t");
+    printf("+--- Message %d ---+\n", msg->id);
     int i;
     for (i = 0; i < msg->length; i++)
     {
-        Serial.println((int8_t)msg->data[i]);
+       printf("\t[%d]: %d\n", i, (int8_t) msg->data[i]);
     }
-    Serial.println();
 }

@@ -10,14 +10,19 @@
 #include <stdlib.h>
 
 #include "util.h"
-#include "JOYSTICK_driver.h"
-#include "UART_driver.h"
-#include "OLED_driver.h"
-#include "CAN_driver.h"
-#include "CAN_test.h"
-#include "solenoid_driver.h"
-#include "input.h"
-#include "menu.h"
+#include "input/JOYSTICK_driver.h"
+#include "com/UART_driver.h"
+#include "display/OLED_driver.h"
+#include "com/CAN_driver.h"
+#include "com/CAN_test.h"
+#include "input/solenoid_driver.h"
+#include "input/input.h"
+#include "display/menu.h"
+
+typedef enum {
+	PLAYING,
+	MENU
+} GameState_t;
 
 
 void SRAM_test(void)
@@ -73,7 +78,8 @@ int main(void)
     CAN_init(MCP_MODE_NORMAL);
 
     // Menu initialization
-    Menu_t* active_menu = menu_create_start_menu();
+    Menu_t* main_menu = menu_create_start_menu();
+	Menu_t* active_menu = main_menu;
     OLED_clr();
     menu_draw(active_menu, 2);
 
@@ -82,63 +88,95 @@ int main(void)
 
     // Store incoming CAN message
     CanMessage_t resp;
+	CanMessage_t game_start;
+	game_start.id = SCORE;
+	
+	GameState_t current_state = MENU;
 
     while (1)
     {
+		int event_flag = 0;
+		
         // Update all inputs
         update(&input);
+		
+		if (current_state == MENU)
+		{
+			// Process events
+			switch (get_gesture(&input))
+			{
+				case SWIPE_UP:
+				menu_move(active_menu, MENU_UP);
+				event_flag = 1;
+				break;
+				case SWIPE_DOWN:
+				menu_move(active_menu, MENU_DOWN);
+				event_flag = 1;
+				break;
+				default:
+				break;
+			}
 
-        // Send input states to Node 2
-        send_input(&input);
+			if (is_enter_pressed(&input))
+			{
+				if (active_menu->selected)
+				{
+					active_menu = active_menu->selected;
+					
+					if (active_menu == main_menu->children[0])
+					{
+						current_state = PLAYING;
+						
+						menu_set_title(active_menu->children[0], "Playing...");
+						menu_set_title(active_menu->children[1], "Score: 0");
+						
+						CAN_send(&game_start);
+					}
+					event_flag  = 1;
+				}
+			}
 
-        // Process events
-        int event_flag = 0;
-        switch (get_gesture(&input))
-        {
-        case SWIPE_UP:
-            menu_move(active_menu, MENU_UP);
-            event_flag = 1;
-            break;
-        case SWIPE_DOWN:
-            menu_move(active_menu, MENU_DOWN);
-            event_flag = 1;
-            break;
-        default:
-            break;
-        }
-
-        if (is_enter_pressed(&input))
-        {
-            if (active_menu->selected)
-            {
-                active_menu = active_menu->selected;
-                event_flag  = 1;
-            }
-            solenoid_fire();
-        }
-
-        if (is_back_pressed(&input))
-        {
-            if (active_menu->parent)
-            {
-                active_menu = active_menu->parent;
-                event_flag  = 1;
-            }
-        }
-
-        // Check for incoming message
-        resp = CAN_receive();
-        if (resp.id == SCORE)
-        {
-            if (active_menu->length > 3)
-            {
-                char tmp[50];
-                sprintf(tmp, "Score: %d", resp.data[0] << 8 | resp.data[1]);
-                menu_set_title(active_menu->children[3], tmp);
-                event_flag = 1;
-            }
-        }
-
+			if (is_back_pressed(&input))
+			{
+				if (active_menu->parent)
+				{
+					active_menu = active_menu->parent;
+					event_flag  = 1;
+				}
+			}
+		}
+		else if(current_state == PLAYING)
+		{
+		
+			// Send input states to Node 2
+			send_input(&input);
+			
+			 // Check for incoming message
+			 resp = CAN_receive();
+			 if (resp.id == SCORE)
+			 {
+				 current_state = MENU;
+				 uint16_t score = resp.data[0] << 8 | resp.data[1];
+				 printf("You lose...1");
+				 char tmp[50];
+				 printf("You lose...2");
+				 sprintf(tmp, "Score: %d", score);
+				 printf("You lose...3");
+				 menu_set_title(main_menu->children[0]->children[1], tmp);
+				 printf("You lose...4");
+				 menu_set_title(main_menu->children[0]->children[0], "You lose...");
+				 printf("You lose...5");
+				 menu_update_highscores(main_menu->children[1], score);
+				 event_flag = 1;
+				 printf("You lose...6");
+			 }
+			 
+			 if (is_enter_pressed(&input))
+			 {
+				 solenoid_fire();
+			 }
+		}
+       
         // Draw if necessary
         if (event_flag)
         {

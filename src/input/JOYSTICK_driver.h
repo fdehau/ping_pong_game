@@ -12,7 +12,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
-
 #include "../com/ADC_driver.h"
 #include "../util.h"
 

@@ -11,7 +11,7 @@
 #include <avr/io.h>
 #include <stdio.h>
 
-#include "util.h"
+#include "../util.h"
 
 #define BAUDRATE 9600
 #define BAUD_PRESCALLER ((F_CPU / BAUDRATE / 16UL) - 1)

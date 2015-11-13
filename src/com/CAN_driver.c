@@ -83,16 +83,15 @@ CanMessage_t CAN_receive()
 
 
 /**
- * @brief Util function to print the content of a message
+ * @brief Helper function to print the content of a message
  * @param msg Message to print
  */
 void CAN_print_message(CanMessage_t* msg)
 {
-    printf("+--- Message %d ---+\n", msg->id);
-    printf("\t");
-    for (int i = 0; i < msg->length; i++)
-    {
-        printf("%d ", msg->data[i]);
-    }
-    printf("\n");
+	printf("+--- Message %d ---+\n", msg->id);
+	int i;
+	for (i = 0; i < msg->length; i++)
+	{
+		printf("\t[%d]: %d\n", i, (int8_t) msg->data[i]);
+	}
 }

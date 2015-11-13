@@ -13,7 +13,7 @@
  */
 void MCP2515_init()
 {
-    uint8_t value;
+    uint8_t value = 0;
 
     SPI_init();
     MCP2515_reset();
@@ -29,7 +29,6 @@ void MCP2515_init()
     }
     printf("MCP2515 configuration mode... OK\n");
 
-    return 0;
 }
 
 /**

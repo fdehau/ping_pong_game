@@ -9,7 +9,7 @@
 #define CAN_TEST_H_
 
 #include "CAN_driver.h"
-#include "util.h"
+#include "../util.h"
 
 void CAN_test_loopback();
 void CAN_test_normal_send();
