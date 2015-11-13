@@ -7,8 +7,10 @@
 
 #include "solenoid_driver.h"
 
-#include <avr/delay.h>
+
 #include <avr/io.h>
+
+#include "../util.h"
 
 /**
  * @brief      Initialize the solenoid driver

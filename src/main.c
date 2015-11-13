@@ -106,34 +106,31 @@ int main(void)
 			switch (get_gesture(&input))
 			{
 				case SWIPE_UP:
-				menu_move(active_menu, MENU_UP);
-				event_flag = 1;
-				break;
+					menu_move(active_menu, MENU_UP);
+					event_flag = 1;
+					break;
 				case SWIPE_DOWN:
-				menu_move(active_menu, MENU_DOWN);
-				event_flag = 1;
-				break;
+					menu_move(active_menu, MENU_DOWN);
+					event_flag = 1;
+					break;
 				default:
-				break;
+					break;
 			}
 
 			if (is_enter_pressed(&input))
 			{
-				if (active_menu->selected)
-				{
-					active_menu = active_menu->selected;
+				active_menu = active_menu->children[active_menu->selected];
 					
-					if (active_menu == main_menu->children[0])
-					{
-						current_state = PLAYING;
+				if (active_menu == main_menu->children[0])
+				{
+					current_state = PLAYING;
 						
-						menu_set_title(active_menu->children[0], "Playing...");
-						menu_set_title(active_menu->children[1], "Score: 0");
+					menu_set_title(active_menu->children[0], "Playing...");
+					menu_set_title(active_menu->children[1], "Score: 0");
 						
-						CAN_send(&game_start);
-					}
-					event_flag  = 1;
+					CAN_send(&game_start);
 				}
+				event_flag  = 1;
 			}
 
 			if (is_back_pressed(&input))

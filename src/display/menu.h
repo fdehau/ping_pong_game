@@ -12,17 +12,17 @@
 #include <stdio.h>
 #include <string.h>
 
-#define NB_SCORES 5
+#define NB_SCORES 2
 
 #include "OLED_driver.h"
 
 struct Menu
 {
     char* title;
-    struct Menu* parent;
+	struct Menu* parent;
     struct Menu** children;
-    struct Menu* selected;
-    int length;
+    uint8_t selected;
+    uint8_t length;
 };
 typedef struct Menu Menu_t;
 
@@ -41,6 +41,6 @@ void     menu_draw(Menu_t* item, int line);
 
 Menu_t * menu_create_start_menu();
 void     menu_update_highscores(Menu_t* scores, uint16_t score);
-int      menu_move(Menu_t* item, MenuDirection_t direction);
+void     menu_move(Menu_t* item, MenuDirection_t direction);
 
 #endif /* MENU_H_ */

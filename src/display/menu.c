@@ -20,9 +20,9 @@ Menu_t * menu_create(const char* title)
     strcpy(new_item->title, title);
 
     // Default values for the rest of the fields
-    new_item->parent   = NULL;
+	new_item->parent   = NULL;
     new_item->children = NULL;
-    new_item->selected = NULL;
+    new_item->selected = 0;
     new_item->length   = 0;
 
     return new_item;
@@ -39,9 +39,9 @@ void menu_free(Menu_t* menu)
 }
 
 /**
- * @brief Add a new submenu to a given menu
+ * @brief Add a new sub menu to a given menu
  * @param parent An existing menu item that will act as a parent
- * @param child The new submenu
+ * @param child The new sub menu
  */
 void menu_add(Menu_t* parent, Menu_t* child)
 {
@@ -54,13 +54,9 @@ void menu_add(Menu_t* parent, Menu_t* child)
         printf("Realloc in menu_add() failed !\n");
     }
 
-    // Add the new submenu
+    // Add the new sub menu
     parent->children[parent->length - 1] = child;
-    if (!parent->selected)
-    {
-        parent->selected = child;
-    }
-    child->parent = parent;
+	child->parent = parent;
 }
 
 /**
@@ -87,7 +83,7 @@ void menu_draw(Menu_t* menu, int line)
     OLED_print(menu->title);
     for (int i = 0; i < menu->length; i++)
     {
-        if (menu->children[i] == menu->selected)
+        if (i == menu->selected)
             OLED_print_arrow(i + line, 0);
         OLED_pos(i + line, 8, 127 - 8);
         OLED_print(menu->children[i]->title);
@@ -121,21 +117,6 @@ Menu_t * menu_create_start_menu()
 }
 
 /**
- * @brief Retrieve the selected menu item
- * @param menu The active menu
- * @return Index of the selected menu among children of the given menu
- */
-int menu_get_selected_index(Menu_t* menu)
-{
-    for (int i = 0; i < menu->length; i++)
-    {
-        if (menu->children[i] == menu->selected)
-            return i;
-    }
-    return -1;
-}
-
-/**
  * @brief Move the selection from one menu item to another one
  * @param menu The menu where the selection should be moved
  * @param direction Where to search for the next menu item
@@ -144,29 +125,23 @@ int menu_get_selected_index(Menu_t* menu)
  *        can't move from it
  *  - 0: The change in selection is successful
  */
-int menu_move(Menu_t* menu, MenuDirection_t direction)
+void menu_move(Menu_t* menu, MenuDirection_t direction)
 {
-    if (!menu->selected)
-        return -1;
-    else
+    uint8_t index = menu->selected;
+    switch (direction)
     {
-        int index = menu_get_selected_index(menu);
-        switch (direction)
-        {
-        case MENU_UP:
-            if (index == 0)
-                menu->selected = menu->children[menu->length - 1];
-            else
-                menu->selected = menu->children[index - 1];
-            break;
-        case MENU_DOWN:
-            if (index == (menu->length - 1))
-                menu->selected = menu->children[0];
-            else
-                menu->selected = menu->children[index + 1];
-            break;
-        }
-        return 0;
+    case MENU_UP:
+        if (index == 0)
+            menu->selected = menu->length - 1;
+        else
+            menu->selected = index - 1;
+        break;
+    case MENU_DOWN:
+        if (index == (menu->length - 1))
+            menu->selected = 0;
+        else
+            menu->selected = index + 1;
+        break;
     }
 }
 

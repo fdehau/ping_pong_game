@@ -32,6 +32,8 @@ void setup()
 
     Serial.begin(9600);
     fdevopen(uart_hack, NULL);
+	
+	printf("Setup... OK!");
 }
 #define SCORE_TIMEOUT 1000
 
