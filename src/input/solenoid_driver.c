@@ -29,6 +29,6 @@ void solenoid_init()
 void solenoid_fire()
 {
     PORTE &= ~(1 << PE0);
-    _delay_ms(500);
+    _delay_ms(100);
     PORTE |= (1 << PE0);
 }

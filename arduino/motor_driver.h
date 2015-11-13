@@ -13,17 +13,19 @@
 #include <Wire/Wire.h>
 
 #define DAC_ADRESS 0b0101000
+#define INPUT_COEFF 10
 
 typedef struct
 {
     int16_t position;
-    int16_t max_encoder_value;
+    int16_t max;
+	int16_t min;
     int16_t reference;
     int16_t KP;
     int16_t KI;
+	int16_t KD;
     int16_t error;
     int16_t integral;
-    int16_t last_output;
 } Controller;
 
 void    motor_init();
@@ -38,7 +40,7 @@ void motor_enable(uint8_t enable);
 void motor_control(int8_t value);
 
 void controller_calibrate(Controller* controller);
-void controller_set_reference(Controller* controller, uint8_t value);
+void controller_set_reference(Controller* controller, int8_t value);
 void controller_pi(Controller* controller, int16_t dt);
 
 

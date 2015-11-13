@@ -54,7 +54,7 @@ void loop()
         {
             servo_joystick_control((int8_t) resp.data[1]);
             controller_set_reference(&controller, (int8_t) resp.data[1]);
-            CAN_print_message(&resp);
+            //CAN_print_message(&resp);
         }
 		else if(resp.id == SCORE)
 		{

@@ -36,6 +36,10 @@ void update(Input_t* input)
     // Update left slider
     input->left_slider[1] = input->left_slider[0];
     input->left_slider[0] = JOY_getButton(JOY_LEFT_SLIDER);
+	
+	// Update right slider
+	input->right_slider[1] = input->right_slider[0];
+	input->right_slider[0] = JOY_getButton(JOY_RIGHT_SLIDER);
 
 }
 
@@ -103,18 +107,12 @@ void send_input(Input_t* input)
 {
     CanMessage_t message;
 
-    // Check if one the input states has changed
-    if (input->joy_position[0].X != input->joy_position[1].X ||
-        input->joy_position[0].Y != input->joy_position[1].Y ||
-        input->left_slider[0] != input->left_slider[1])
-    {
-        message.id      = INPUT_ID;
-        message.length  = 4;
-        message.data[0] = input->joy_direction[0];
-        message.data[1] = input->joy_position[0].X;
-        message.data[2] = input->joy_position[0].Y;
-        message.data[3] = input->left_slider[0];
-        CAN_print_message(&message);
-        CAN_send(&message);
-    }
+    message.id      = INPUT_ID;
+    message.length  = 4;
+    message.data[0] = input->joy_direction[0];
+    message.data[1] = input->joy_position[0].X;
+    message.data[2] = input->joy_position[0].Y;
+    message.data[3] = input->right_slider[0];
+    CAN_print_message(&message);
+    CAN_send(&message);
 }

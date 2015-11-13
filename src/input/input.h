@@ -28,6 +28,7 @@ struct Input
     JOY_direction_t joy_direction[2];
     JOY_position_t joy_position[2];
     uint8_t left_slider[2];
+	uint8_t right_slider[2];
 };
 typedef struct Input Input_t;
 

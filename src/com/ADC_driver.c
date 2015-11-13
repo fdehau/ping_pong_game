@@ -7,6 +7,7 @@
 
 #include "ADC_driver.h"
 
+
 /**
  * @brief Read char on a given channel
  *

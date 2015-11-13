@@ -36,41 +36,49 @@ void motor_init()
 
 void controller_calibrate(Controller* controller)
 {
-    controller->KP = 1;
-    controller->KI = 1;
+    controller->KP = 3;
+    controller->KI = 5;
+	controller->KD = 1;
 
-    motor_control(-80);
+    motor_control(-100);
     _delay_ms(1000);
     motor_reset();
-    //int16_t after_reset = -motor_read();
-    motor_control(80);
-    _delay_ms(800);
-    controller->max_encoder_value = -motor_read(); //- after_reset;
-    controller_set_reference(controller, 255);
-    motor_control(0);
+    controller->min = -motor_read();
+    motor_control(100);
+    _delay_ms(1000);
+    controller->max = -motor_read();
+    controller_set_reference(controller, (controller->max - controller->min) / 2);
+	motor_control(0);
 }
 
-void controller_set_reference(Controller* controller, uint8_t value)
+void controller_set_reference(Controller* controller, int8_t value)
 {
-    controller->reference = (int16_t) value;
+    controller->reference += INPUT_COEFF * value;
+	if (controller->reference > controller->max)
+	{
+		controller->reference = controller->max;
+	}
+	else if (controller->reference < controller->min)
+	{
+		controller->reference = controller->min;
+	}
 }
 
 void controller_pi(Controller* controller, int16_t dt)
 {
-    int16_t current = -(int32_t) motor_read() * 255 /
-                      controller->max_encoder_value;
-    int16_t error = controller->reference - current;
+    int16_t current = -motor_read();
+	int16_t error = (controller->reference - current) / 10;
     controller->integral += error * dt / 1000;
-    controller->error     = error;
-    int16_t output = controller->KP * error + controller->KI *
-                     controller->integral;
-    int16_t command = output / 2;
-    //printf("Dt: %d | Current: %d | Reference: %d | Error:%d | Max: %d |
-    // Integral: %d |Output: %d | Command: %d\n", dt, current,
-    // controller->reference, error, controller->max_encoder_value,
-    // controller->integral, output, (int8_t) command);
-    motor_control((int8_t) command);
-    controller->last_output = output;
+	int16_t derivative = error - controller->error;
+    int16_t output = error / controller->KP + controller->integral / controller->KI + derivative * controller->KD;
+	printf("output: %d\n", output);
+	if (output > 127)
+		output = 127;
+	else if (output < -127)
+		output = -127;
+    printf("| %d - %d = %d  |  %d + %d + %d = %d\n", current, controller->reference, error, error / controller->KP, controller->integral / controller->KI, derivative * controller->KD, (int8_t) output);
+    motor_control((int8_t) output);
+    controller->error = error;
 }
 
 

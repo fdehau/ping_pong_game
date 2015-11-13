@@ -119,18 +119,21 @@ int main(void)
 
 			if (is_enter_pressed(&input))
 			{
-				active_menu = active_menu->children[active_menu->selected];
-					
-				if (active_menu == main_menu->children[0])
+				if(active_menu->length > 0)
 				{
-					current_state = PLAYING;
+					active_menu = active_menu->children[active_menu->selected];
+					
+					if (active_menu == main_menu->children[0])
+					{
+						current_state = PLAYING;
 						
-					menu_set_title(active_menu->children[0], "Playing...");
-					menu_set_title(active_menu->children[1], "Score: 0");
+						menu_set_title(active_menu->children[0], "Playing...");
+						menu_set_title(active_menu->children[1], "Score: 0");
 						
-					CAN_send(&game_start);
+						CAN_send(&game_start);
+					}
+					event_flag  = 1;
 				}
-				event_flag  = 1;
 			}
 
 			if (is_back_pressed(&input))
@@ -154,18 +157,12 @@ int main(void)
 			 {
 				 current_state = MENU;
 				 uint16_t score = resp.data[0] << 8 | resp.data[1];
-				 printf("You lose...1");
 				 char tmp[50];
-				 printf("You lose...2");
 				 sprintf(tmp, "Score: %d", score);
-				 printf("You lose...3");
 				 menu_set_title(main_menu->children[0]->children[1], tmp);
-				 printf("You lose...4");
 				 menu_set_title(main_menu->children[0]->children[0], "You lose...");
-				 printf("You lose...5");
 				 menu_update_highscores(main_menu->children[1], score);
 				 event_flag = 1;
-				 printf("You lose...6");
 			 }
 			 
 			 if (is_enter_pressed(&input))

@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define NB_SCORES 2
+#define NB_SCORES 3
 
 #include "OLED_driver.h"
 

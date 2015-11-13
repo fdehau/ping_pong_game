@@ -155,15 +155,15 @@ void menu_update_highscores(Menu_t* scores, uint16_t score)
 		if (current_score < score)
 		{
 			index = i;
-			for (int j = scores->length - 1; j > index; j++)
+			for (int j = scores->length - 1; j > index; j--)
 			{
 				char* title = scores->children[j - 1]->title;
 				menu_set_title(scores->children[j], title);
 			}
+			char tmp[50];
+			sprintf(tmp, "- %d", score);
+			menu_set_title(scores->children[index], tmp);
 			break;
 		}
 	}
-	char tmp[50];
-	sprintf(tmp, "- %d", score);
-	menu_set_title(scores->children[index], tmp);
 }

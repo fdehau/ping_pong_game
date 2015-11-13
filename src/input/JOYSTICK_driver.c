@@ -8,7 +8,7 @@
 #include "JOYSTICK_driver.h"
 
 /**
- * @brief Intialize the driver and calibrate the joystick
+ * @brief Initialize the driver and calibrate the joystick
  */
 void JOY_init()
 {
@@ -61,7 +61,7 @@ uint8_t JOY_getButton(enum JOY_button button)
 
 
 /**
- * @brief Get the current of the joystic (X-axis and Y-axis)
+ * @brief Get the current of the joystick (X-axis and Y-axis)
  * @return The position of the joystick store in a JOY_position_t struct
  */
 JOY_position_t JOY_getPosition()
@@ -69,7 +69,6 @@ JOY_position_t JOY_getPosition()
     JOY_position_t position;
     uint8_t        JOY_X_value = ADC_read(JOY_X);
     uint8_t        JOY_Y_value = ADC_read(JOY_Y);
-	printf("%d\n",JOY_X_value);
 
     position.X = (JOY_X_value - JOY_X_INIT) * 100 / (255 - JOY_X_INIT);
     position.Y = (JOY_Y_value - JOY_Y_INIT) * 100 / (255 - JOY_Y_INIT);
