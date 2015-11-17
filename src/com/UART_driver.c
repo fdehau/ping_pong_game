@@ -30,7 +30,9 @@ void UART_init(void)
  */
 int UART_send(unsigned char data, struct __file* dummy)
 {
-    while (!(UCSR0A & (1 << UDRE0))){}
+    while (!(UCSR0A & (1 << UDRE0)))
+    {
+    }
     UDR0 = data;
     return 1;
 }
@@ -44,6 +46,8 @@ int UART_send(unsigned char data, struct __file* dummy)
  */
 int UART_receive(struct __file* dummy)
 {
-    while (!(UCSR0A & (1 << RXC0))){}
+    while (!(UCSR0A & (1 << RXC0)))
+    {
+    }
     return UDR0;
 }

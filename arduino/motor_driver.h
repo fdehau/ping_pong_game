@@ -18,14 +18,14 @@ typedef struct
 {
     int16_t position;
     int16_t max;
-	int16_t min;
+    int16_t min;
     int16_t reference;
     int16_t KP;
     int16_t KI;
-	int16_t KD;
+    int16_t KD;
     int16_t error;
     int16_t integral;
-	int16_t input_coeff;
+    int16_t input_coeff;
 } Controller;
 
 void    motor_init();

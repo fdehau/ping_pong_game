@@ -40,7 +40,8 @@ void OLED_init()
 }
 
 /**
- * @brief      Send a specific command to the OLED driver (useful for the configuration at startup)
+ * @brief      Send a specific command to the OLED driver (useful for the
+ *configuration at startup)
  *
  * @param[in]  cmd  Command code
  */
@@ -133,7 +134,8 @@ void OLED_print(char* string)
 }
 
 /**
- * @brief      Util function to print an arrow on the display (use in menu drawing)
+ * @brief      Util function to print an arrow on the display (use in menu
+ *drawing)
  *
  * @param[in]  page  Page index
  * @param[in]  col   Column index

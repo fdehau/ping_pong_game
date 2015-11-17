@@ -10,6 +10,7 @@
 
 #define F_CPU 4915200
 #include <util/delay.h>
+#include <stdlib.h>
 
 #define bit_get(p, m) ((p) & (m))
 #define bit_set(p, m) ((p) |= (m))

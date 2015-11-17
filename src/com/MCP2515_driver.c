@@ -92,7 +92,8 @@ void MCP2515_write(uint8_t address, const uint8_t data)
 
 
 /**
- * @brief      Tell the controller that one of the buffer is ready to be sent over CAN
+ * @brief      Tell the controller that one of the buffer is ready to be sent
+ *over CAN
  *
  * @param[in]  buffer  Code associated with the buffer
  */

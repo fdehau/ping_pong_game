@@ -37,10 +37,10 @@ void update(Input_t* input)
     // Update left slider
     input->left_slider[1] = input->left_slider[0];
     input->left_slider[0] = JOY_getButton(JOY_LEFT_SLIDER);
-	
-	// Update right slider
-	input->right_slider[1] = input->right_slider[0];
-	input->right_slider[0] = JOY_getButton(JOY_RIGHT_SLIDER);
+
+    // Update right slider
+    input->right_slider[1] = input->right_slider[0];
+    input->right_slider[0] = JOY_getButton(JOY_RIGHT_SLIDER);
 
 }
 

@@ -3,7 +3,7 @@
  *
  * Created: 15.11.2015 22:03:57
  *  Author: vegasten
- */ 
+ */
 
 
 #ifndef INTRO_H_
@@ -25,7 +25,8 @@ void intro_print_inverted_lightning(int position);
 
 //Text
 void intro_print_text();
-void intro_print_blinking_text(uint8_t time, uint8_t period, uint8_t line, uint8_t pos, char* text);
+void intro_print_blinking_text(uint8_t time, uint8_t period, uint8_t line,
+                               uint8_t pos, char* text);
 void intro_print_P(int position);
 void intro_print_I(int position);
 void intro_print_N(int position);

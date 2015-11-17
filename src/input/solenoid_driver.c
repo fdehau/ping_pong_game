@@ -18,7 +18,7 @@
 void solenoid_init()
 {
     // Set the first pin of port E as output
-    DDRE   = (1 << DDE0);
+    DDRE = (1 << DDE0);
     // Set the pin high
     PORTE |= (1 << PE0);
 }

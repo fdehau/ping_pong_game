@@ -70,6 +70,6 @@ void CAN_print_message(CanMessage_t* msg)
     int i;
     for (i = 0; i < msg->length; i++)
     {
-       printf("\t[%d]: %d\n", i, (int8_t) msg->data[i]);
+        printf("\t[%d]: %d\n", i, (int8_t) msg->data[i]);
     }
 }

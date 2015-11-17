@@ -86,8 +86,8 @@ JOY_direction_t JOY_getDirection()
 
     JOY_position_t position  = JOY_getPosition();
     int            max_value = abs(position.X) > abs(position.Y)
-                             ? abs(position.X)
-                             : abs(position.Y);
+                               ? abs(position.X)
+                               : abs(position.Y);
 
     if (max_value < JOY_THRESHOLD)
         return NEUTRAL;

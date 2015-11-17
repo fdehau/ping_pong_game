@@ -19,7 +19,7 @@
 struct Menu
 {
     char* title;
-	struct Menu* parent;
+    struct Menu* parent;
     struct Menu** children;
     uint8_t selected;
     uint8_t length;

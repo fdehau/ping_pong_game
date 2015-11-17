@@ -20,7 +20,7 @@ Menu_t * menu_create(const char* title)
     strcpy(new_item->title, title);
 
     // Default values for the rest of the fields
-	new_item->parent   = NULL;
+    new_item->parent   = NULL;
     new_item->children = NULL;
     new_item->selected = 0;
     new_item->length   = 0;
@@ -56,7 +56,7 @@ void menu_add(Menu_t* parent, Menu_t* child)
 
     // Add the new sub menu
     parent->children[parent->length - 1] = child;
-	child->parent = parent;
+    child->parent                        = parent;
 }
 
 /**
@@ -97,23 +97,23 @@ void menu_draw(Menu_t* menu, int line)
  */
 Menu_t * menu_create_start_menu()
 {
-    Menu_t* main_menu = menu_create("Main Menu");
-    Menu_t* play_menu = menu_create("Play");
-	Menu_t* play_status = menu_create("Playing...");
-	menu_add(play_menu, play_status);
-	Menu_t* play_score = menu_create("Score: 0");
+    Menu_t* main_menu   = menu_create("Main Menu");
+    Menu_t* play_menu   = menu_create("Play");
+    Menu_t* play_status = menu_create("Playing...");
+    menu_add(play_menu, play_status);
+    Menu_t* play_score = menu_create("Score: 0");
     menu_add(play_menu, play_score);
-	menu_add(main_menu, play_menu);
+    menu_add(main_menu, play_menu);
     Menu_t* high_scores_menu = menu_create("High scores");
-	for (int i = 0; i < NB_SCORES; i++)
-	{
-		Menu_t* item = menu_create("- 0");
-		menu_add(high_scores_menu, item);
-	}
+    for (int i = 0; i < NB_SCORES; i++)
+    {
+        Menu_t* item = menu_create("- 0");
+        menu_add(high_scores_menu, item);
+    }
     menu_add(main_menu, high_scores_menu);
     Menu_t* settings_menu = menu_create("Settings");
-	Menu_t* speed_option = menu_create("Speed: Medium");
-	menu_add(settings_menu, speed_option);
+    Menu_t* speed_option  = menu_create("Speed: Medium");
+    menu_add(settings_menu, speed_option);
     menu_add(main_menu, settings_menu);
     return main_menu;
 }
@@ -149,23 +149,23 @@ void menu_move(Menu_t* menu, MenuDirection_t direction)
 
 void menu_update_highscores(Menu_t* scores, uint16_t score)
 {
-	uint16_t current_score = 0;
-	uint8_t index = scores->length - 1;
-	for (int i = 0; i < scores->length; i++)
-	{
-		sscanf(scores->children[i]->title, "- %d", &current_score);
-		if (current_score < score)
-		{
-			index = i;
-			for (int j = scores->length - 1; j > index; j--)
-			{
-				char* title = scores->children[j - 1]->title;
-				menu_set_title(scores->children[j], title);
-			}
-			char tmp[10];
-			sprintf(tmp, "- %d", score);
-			menu_set_title(scores->children[index], tmp);
-			break;
-		}
-	}
+    uint16_t current_score = 0;
+    uint8_t  index         = scores->length - 1;
+    for (int i = 0; i < scores->length; i++)
+    {
+        sscanf(scores->children[i]->title, "- %d", &current_score);
+        if (current_score < score)
+        {
+            index = i;
+            for (int j = scores->length - 1; j > index; j--)
+            {
+                char* title = scores->children[j - 1]->title;
+                menu_set_title(scores->children[j], title);
+            }
+            char tmp[10];
+            sprintf(tmp, "- %d", score);
+            menu_set_title(scores->children[index], tmp);
+            break;
+        }
+    }
 }
