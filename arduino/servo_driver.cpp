@@ -24,7 +24,7 @@ void servo_init()
     OCR2A = TOP_VALUE;
 
     float i;
-    float n = WIDTH_DUTY_CYCLE / 30;
+    float n = WIDTH_DUTY_CYCLE / 10;
     for (i = LOWER_DUTY_CYCLE; i < HIGHER_DUTY_CYCLE; i += n)
     {
         servo_set_duty_cycle(i);

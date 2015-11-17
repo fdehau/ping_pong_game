@@ -8,7 +8,6 @@
 #include "controller_driver.h"
 #include <stdio.h>
 
-
 Controller controller;
 
 int uart_hack(char c, FILE* f)
@@ -40,11 +39,14 @@ void setup()
 void loop()
 {
     CanMessage_t resp;
-	uint32_t last, current = 0;
-	uint32_t score = 0;
+	uint32_t last, current;
+	uint16_t score = 0;
 	uint8_t playing = 0;
     uint32_t last_ball = 0;
+	uint32_t count = 0;
 
+	current = last = millis();
+	
     while (1)
     {
         current = millis();
@@ -62,11 +64,13 @@ void loop()
 		{
 			score = 0;
 			playing = 1;
+			CAN_print_message(&resp);
 		}
 		else if(resp.id == SETTINGS)
 		{
 			controller_set_input_coeff(&controller, resp.data[0]);
 			printf("Speed changed\n");
+			CAN_print_message(&resp);
 		}
 
         if (ir_check() == 1)
@@ -81,15 +85,20 @@ void loop()
                 CAN_send(&message);
                 printf("Score updated: %d\n", score);
                 playing = 0;
+				score = 0;
+				motor_control(0);
             }
             last_ball = millis();
         }
 		
-        score += (current - last);
+        if (count % 100 == 0)
+			score += 1;
+		//printf("Score: %d\n", score);
 
 		if (playing)
-			controller_pi(&controller, (int) current - last);
+			controller_pi(&controller, (uint32_t) current - last);
 		
 		last = current;
+		count++;
     }
 }

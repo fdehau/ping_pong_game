@@ -80,8 +80,8 @@ int main(void)
     CAN_init(MCP_MODE_NORMAL);
 
 
-	//intro_run_intro();
-	//intro_ball_enter_screen();
+	intro_run_intro();
+	intro_ball_enter_screen();
 	uint8_t ball_position = 0;
 	uint8_t ball_speed = 1;
 	uint8_t count = 0;
@@ -175,6 +175,7 @@ int main(void)
 						menu_set_title(active_menu->children[1], "Score: 0");
 						CanMessage_t game_start;
 						game_start.id = SCORE;
+						game_start.length = 0;
 						CAN_send(&game_start);
 					}
 				}
@@ -192,9 +193,6 @@ int main(void)
 		}
 		else if(current_state == PLAYING)
 		{
-		
-			// Send input states to Node 2
-			send_input(&input);
 			
 			 // Check for incoming message
 			 resp = CAN_receive();
@@ -202,17 +200,22 @@ int main(void)
 			 {
 				 current_state = MENU;
 				 uint16_t score = resp.data[0] << 8 | resp.data[1];
-				 char tmp[50];
+				 char tmp[10];
 				 sprintf(tmp, "Score: %d", score);
 				 menu_set_title(main_menu->children[0]->children[1], tmp);
 				 menu_set_title(main_menu->children[0]->children[0], "You lose...");
 				 menu_update_highscores(main_menu->children[1], score);
 				 event_flag = 1;
 			 }
-			 
-			 if (is_enter_pressed(&input))
+			 else
 			 {
-				 solenoid_fire();
+				  if (is_enter_pressed(&input))
+				  {
+					  solenoid_fire();
+				  }
+				  
+				  // Send input states to Node 2
+				  send_input(&input);
 			 }
 		}
        

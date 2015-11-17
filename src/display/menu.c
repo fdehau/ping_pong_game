@@ -162,7 +162,7 @@ void menu_update_highscores(Menu_t* scores, uint16_t score)
 				char* title = scores->children[j - 1]->title;
 				menu_set_title(scores->children[j], title);
 			}
-			char tmp[50];
+			char tmp[10];
 			sprintf(tmp, "- %d", score);
 			menu_set_title(scores->children[index], tmp);
 			break;

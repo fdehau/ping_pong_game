@@ -114,6 +114,6 @@ void send_input(Input_t* input)
     message.data[1] = input->joy_position[0].X;
     message.data[2] = input->joy_position[0].Y;
     message.data[3] = input->right_slider[0];
-    CAN_print_message(&message);
+    //CAN_print_message(&message);
     CAN_send(&message);
 }
