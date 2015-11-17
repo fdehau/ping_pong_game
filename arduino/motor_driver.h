@@ -13,7 +13,6 @@
 #include <Wire/Wire.h>
 
 #define DAC_ADRESS 0b0101000
-#define INPUT_COEFF 12
 
 typedef struct
 {
@@ -26,6 +25,7 @@ typedef struct
 	int16_t KD;
     int16_t error;
     int16_t integral;
+	int16_t input_coeff;
 } Controller;
 
 void    motor_init();
@@ -42,6 +42,7 @@ void motor_control(int8_t value);
 void controller_calibrate(Controller* controller);
 void controller_set_reference(Controller* controller, int8_t value);
 void controller_pi(Controller* controller, int16_t dt);
+void controller_set_input_coeff(Controller* controller, uint8_t value);
 
 
 #endif /* MOTOR_DRIVER_H_ */

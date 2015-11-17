@@ -10,6 +10,7 @@
 #include "input.h"
 #include "../com/CAN_driver.h"
 
+
 /**
  * @brief Update current input states (store 2 last states)
  * @param input

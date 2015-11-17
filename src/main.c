@@ -18,8 +18,10 @@
 #include "input/solenoid_driver.h"
 #include "input/input.h"
 #include "display/menu.h"
+#include "display/intro.h"
 
 typedef enum {
+	INTRO,
 	PLAYING,
 	MENU
 } GameState_t;
@@ -77,30 +79,50 @@ int main(void)
     solenoid_init();
     CAN_init(MCP_MODE_NORMAL);
 
+
+	//intro_run_intro();
+	//intro_ball_enter_screen();
+	uint8_t ball_position = 0;
+	uint8_t ball_speed = 1;
+	uint8_t count = 0;
+
+
     // Menu initialization
     Menu_t* main_menu = menu_create_start_menu();
 	Menu_t* active_menu = main_menu;
-    OLED_clr();
-    menu_draw(active_menu, 2);
 
     // Store all input states
     Input_t input;
+	update(&input);
 
     // Store incoming CAN message
     CanMessage_t resp;
-	CanMessage_t game_start;
-	game_start.id = SCORE;
 	
-	GameState_t current_state = MENU;
-
+	GameState_t current_state = INTRO;
+	
     while (1)
     {
 		int event_flag = 0;
+		count++;
 		
         // Update all inputs
         update(&input);
-		
-		if (current_state == MENU)
+	
+		if (current_state == INTRO)
+		{
+			
+			if (ball_position < 0 || ball_position > 114)
+				ball_speed *= -1;
+			ball_position += ball_speed;
+			event_flag = 1;
+			
+			if (is_enter_pressed(&input))
+			{
+				current_state = MENU;
+				event_flag = 1;
+			}
+		}
+		else if (current_state == MENU)
 		{
 			// Process events
 			switch (get_gesture(&input))
@@ -119,7 +141,29 @@ int main(void)
 
 			if (is_enter_pressed(&input))
 			{
-				if(active_menu->length > 0)
+				 if(active_menu == main_menu->children[2])
+				 {
+					 CanMessage_t settings;
+					 settings.id = SETTINGS;
+					 settings.length = 1;
+					 if (!strcmp(active_menu->children[0]->title, "Speed: Slow"))
+					 {
+						 menu_set_title(active_menu->children[0], "Speed: Medium");
+						 settings.data[0] = 1;
+					 }
+					 else if (!strcmp(active_menu->children[0]->title, "Speed: Medium"))
+					 {
+						 menu_set_title(active_menu->children[0], "Speed: Fast");
+						 settings.data[0] = 2;
+					 }
+					 else if (!strcmp(active_menu->children[0]->title, "Speed: Fast"))
+					 {
+						 menu_set_title(active_menu->children[0], "Speed: Slow");
+						 settings.data[0] = 0;
+					 }
+					 CAN_send(&settings);
+				 }
+				else if(active_menu->length > 0)
 				{
 					active_menu = active_menu->children[active_menu->selected];
 					
@@ -129,11 +173,12 @@ int main(void)
 						
 						menu_set_title(active_menu->children[0], "Playing...");
 						menu_set_title(active_menu->children[1], "Score: 0");
-						
+						CanMessage_t game_start;
+						game_start.id = SCORE;
 						CAN_send(&game_start);
 					}
-					event_flag  = 1;
 				}
+				event_flag  = 1;
 			}
 
 			if (is_back_pressed(&input))
@@ -174,8 +219,17 @@ int main(void)
         // Draw if necessary
         if (event_flag)
         {
-            OLED_clr();
-            menu_draw(active_menu, 2);
+			if (current_state == INTRO)
+			{
+				intro_draw_ball(ball_position);
+				intro_print_blinking_text(count, 30, 7, 25, "Press a button !");
+				
+			}
+			else
+			{
+				OLED_clr();
+				menu_draw(active_menu, 2);
+			}
         }
     }
 }

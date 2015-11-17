@@ -51,9 +51,25 @@ void controller_calibrate(Controller* controller)
 	motor_control(0);
 }
 
+void controller_set_input_coeff(Controller* controller, uint8_t value)
+{
+	switch(value)
+	{
+		case 0:
+			controller->input_coeff = 8;
+			break;
+		case 1:
+			controller->input_coeff = 14;
+			break;
+		case 2:
+			controller->input_coeff = 20;
+			break;
+	}
+}
+
 void controller_set_reference(Controller* controller, int8_t value)
 {
-    controller->reference += INPUT_COEFF * value;
+    controller->reference += controller->input_coeff * value;
 	if (controller->reference > controller->max)
 	{
 		controller->reference = controller->max;
@@ -71,12 +87,12 @@ void controller_pi(Controller* controller, int16_t dt)
     controller->integral += error * dt / 1000;
 	int16_t derivative = error - controller->error;
     int16_t output = error / controller->KP + controller->integral / controller->KI + derivative * controller->KD;
-	printf("output: %d\n", output);
+	//printf("output: %d\n", output);
 	if (output > 127)
 		output = 127;
 	else if (output < -127)
 		output = -127;
-    printf("| %d - %d = %d  |  %d + %d + %d = %d\n", current, controller->reference, error, error / controller->KP, controller->integral / controller->KI, derivative * controller->KD, (int8_t) output);
+    //printf("| %d - %d = %d  |  %d + %d + %d = %d\n", current, controller->reference, error, error / controller->KP, controller->integral / controller->KI, derivative * controller->KD, (int8_t) output);
     motor_control((int8_t) output);
     controller->error = error;
 }

@@ -33,7 +33,7 @@ void setup()
     Serial.begin(9600);
     fdevopen(uart_hack, NULL);
 	
-	printf("Setup... OK!");
+	printf("Setup... OK!\n");
 }
 #define SCORE_TIMEOUT 1000
 
@@ -53,7 +53,7 @@ void loop()
         if (resp.id == INPUT_ID)
         {
 			int8_t right_slider = resp.data[3] - 256 / 2;
-			printf("Right slider: %d\n", right_slider);
+			//printf("Right slider: %d\n", right_slider);
             servo_joystick_control(right_slider);
             controller_set_reference(&controller, (int8_t) resp.data[1]);
             //CAN_print_message(&resp);
@@ -62,6 +62,11 @@ void loop()
 		{
 			score = 0;
 			playing = 1;
+		}
+		else if(resp.id == SETTINGS)
+		{
+			controller_set_input_coeff(&controller, resp.data[0]);
+			printf("Speed changed\n");
 		}
 
         if (ir_check() == 1)

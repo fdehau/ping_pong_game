@@ -151,6 +151,12 @@
     <Compile Include="display\font.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="display\intro.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="display\intro.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="display\menu.c">
       <SubType>compile</SubType>
     </Compile>

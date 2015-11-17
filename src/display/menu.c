@@ -98,7 +98,7 @@ void menu_draw(Menu_t* menu, int line)
 Menu_t * menu_create_start_menu()
 {
     Menu_t* main_menu = menu_create("Main Menu");
-    Menu_t* play_menu = menu_create("Play Game");
+    Menu_t* play_menu = menu_create("Play");
 	Menu_t* play_status = menu_create("Playing...");
 	menu_add(play_menu, play_status);
 	Menu_t* play_score = menu_create("Score: 0");
@@ -112,6 +112,8 @@ Menu_t * menu_create_start_menu()
 	}
     menu_add(main_menu, high_scores_menu);
     Menu_t* settings_menu = menu_create("Settings");
+	Menu_t* speed_option = menu_create("Speed: Medium");
+	menu_add(settings_menu, speed_option);
     menu_add(main_menu, settings_menu);
     return main_menu;
 }

@@ -36,7 +36,8 @@ enum CanMsgId
 {
     DEFAULT,
     INPUT_ID,
-    SCORE
+    SCORE,
+	SETTINGS
 };
 
 struct CanMessage
