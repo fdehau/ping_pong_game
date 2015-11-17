@@ -58,7 +58,7 @@ int main(void)
     // Store incoming CAN message
     CanMessage_t resp;
 
-    // Curren game state
+    // Current game state
     GameState_t current_state = INTRO;
 
     // Keep track of events that trigger a redraw on the OLED display
@@ -83,7 +83,7 @@ int main(void)
                 current_state = MENU;
             }
 
-            event_flag = 1
+            event_flag = 1;
         }
         else if (current_state == MENU)
         {
@@ -103,7 +103,7 @@ int main(void)
             }
             if (is_enter_pressed(&input))
             {
-                // If its the settings menu check for cycle around available
+                // If it's the settings menu cycle around available
                 // speeds and send a CAN message to Node 2 to update this
                 // value
                 if (active_menu == main_menu->children[2])
@@ -131,7 +131,7 @@ int main(void)
                     }
                     CAN_send(&settings);
                 }
-                // If the user select a submenu move to this submenu
+                // If the user select a sub menu move to this sub menu
                 else if (active_menu->children[active_menu->selected]->length > 0)
                 {
                     active_menu = active_menu->children[active_menu->selected];
@@ -156,7 +156,7 @@ int main(void)
                 event_flag = 1;
             }
 
-            // Go back it the menus
+            // Go back it menus
             if (is_back_pressed(&input))
             {
                 if (active_menu->parent)
@@ -222,7 +222,9 @@ int main(void)
                 menu_draw(active_menu, 2);
             }
         }
+		
         count++;
+		event_flag = 0;
     }
 }
 
